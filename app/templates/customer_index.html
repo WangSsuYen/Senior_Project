@@ -1,18 +1,19 @@
-{% extends "base.html" %}
+{% extends "customer_base.html" %}
 {% load static %}
 {% block content %}
 
-<div class = "container-fluid ">
+<div class="container-fluid ">
     <span class="fs-2 text-secondary">優惠專區</span>
     <hr>
-    <div class = "container justify-content-center d-flex">
+    <div class="container justify-content-center d-flex">
         <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="row">
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem;">
-                                <img src="{% static "image/steak.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">牛排</h5>
                                     <p class="card-text">使用澳洲牛肉</p>
@@ -20,9 +21,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem;">
-                                <img src="{% static "image/pork.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static  'image/pork.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">豬排</h5>
                                     <p class="card-text">使用台灣山地野生黑豬</p>
@@ -30,9 +32,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem;">
-                                <img src="{% static "image/goat.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">羊排</h5>
                                     <p class="card-text">使用台灣野生山羌</p>
@@ -40,9 +43,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem;">
-                                <img src="{% static "image/chicken.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/chicken.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">雞排排</h5>
                                     <p class="card-text">使用玉山山脈上放山雞</p>
@@ -54,9 +58,10 @@
                 </div>
                 <div class="carousel-item ">
                     <div class="row">
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem; ">
-                                <img src="{% static "image/steak.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">牛排</h5>
                                     <p class="card-text">使用澳洲牛肉</p>
@@ -64,9 +69,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem;">
-                                <img src="{% static "image/pork.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/pork.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">豬排</h5>
                                     <p class="card-text">使用台灣山地野生黑豬</p>
@@ -74,9 +80,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem;">
-                                <img src="{% static "image/goat.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">羊排</h5>
                                     <p class="card-text">使用台灣野生山羌</p>
@@ -84,9 +91,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem; ">
-                                <img src="{% static "image/chicken.jpg" %}" class="card-img-top" alt="..."style="width:200px;height:200px;">
+                                <img src="{% static 'image/chicken.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">雞排排</h5>
                                     <p class="card-text">使用玉山山脈上放山雞</p>
@@ -98,9 +106,10 @@
                 </div>
                 <div class="carousel-item ">
                     <div class="row">
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem; ">
-                                <img src="{% static "image/steak.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">牛排</h5>
                                     <p class="card-text">使用澳洲牛肉</p>
@@ -108,9 +117,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem; ">
-                                <img src="{% static "image/goat.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">羊排</h5>
                                     <p class="card-text">使用台灣野生山羌</p>
@@ -118,9 +128,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem; ">
-                                <img src="{% static "image/pork.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/pork.jpg' %}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">豬排</h5>
                                     <p class="card-text">使用台灣山地野生黑豬</p>
@@ -128,9 +139,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class = "col-md-3">
+                        <div class="col-md-3">
                             <div class="card" style="width: 15rem;">
-                                <img src="{% static "image/chicken.jpg" %}" class="card-img-top" alt="..." style="width:200px;height:200px;">
+                                <img src="{% static 'image/chicken.jpg'%}" class="card-img-top" alt="..."
+                                    style="width:200px;height:200px;">
                                 <div class="card-body">
                                     <h5 class="card-title">雞排排</h5>
                                     <p class="card-text">使用玉山山脈上放山雞</p>
@@ -141,25 +153,28 @@
                     </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
     </div>
 </div>
-<div class = "container-fluid ">
+<div class="container-fluid ">
     <span class="fs-2 text-secondary">所有餐廳</span>
     <hr>
-    <div class = "container justify-content-center d-flex">
+    <div class="container justify-content-center d-flex">
         <div class="row">
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/平凡之屋.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/平凡之屋.jpg'%}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">平凡之屋</h5>
                         <p class="card-text">平凡的吃不平凡的味道</p>
@@ -169,7 +184,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/不夜侯.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/不夜侯.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">不夜侯</h5>
                         <p class="card-text">不喝不知味</p>
@@ -179,7 +195,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/fries.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/fries.jpg'%}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">詐欺犯</h5>
                         <p class="card-text">炸妻香酥脆</p>
@@ -189,7 +206,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/noodle.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/noodle.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">鹿港麵線糊</h5>
                         <p class="card-text">用鼻孔吸也吃得完</p>
@@ -199,7 +217,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/seafood.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/seafood.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">響石天堂</h5>
                         <p class="card-text">通風套餐</p>
@@ -209,7 +228,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/wosami.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/wosami.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">生吃活史</h5>
                         <p class="card-text">滿滿寄生蟲的生魚片</p>
@@ -220,13 +240,14 @@
         </div>
     </div>
 
-    <span class="container" style="height50;"></span>
+    <span class="container" style="height:50px;"></span>
 
-    <div class = "container justify-content-center d-flex">
+    <div class="container justify-content-center d-flex">
         <div class="row">
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/平凡之屋.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/平凡之屋.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">平凡之屋</h5>
                         <p class="card-text">平凡的吃不平凡的味道</p>
@@ -236,7 +257,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/不夜侯.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/不夜侯.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">不夜侯</h5>
                         <p class="card-text">不喝不知味</p>
@@ -246,7 +268,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/fries.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/fries.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">詐欺犯</h5>
                         <p class="card-text">炸妻香酥脆</p>
@@ -256,7 +279,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/noodle.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/noodle.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">鹿港麵線糊</h5>
                         <p class="card-text">用鼻孔吸也吃得完</p>
@@ -266,7 +290,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/seafood.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/seafood.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">響石天堂</h5>
                         <p class="card-text">通風套餐</p>
@@ -276,7 +301,8 @@
             </div>
             <div class="col-md-2">
                 <div class="card" style="width: 13rem;">
-                    <img src="{% static "image/wosami.jpg" %}" class="card-img-top" alt="" style="width:200px;height:200px;">
+                    <img src="{% static 'image/wosami.jpg' %}" class="card-img-top" alt=""
+                        style="width:200px;height:200px;">
                     <div class="card-body">
                         <h5 class="card-title">生吃活史</h5>
                         <p class="card-text">滿滿寄生蟲的生魚片</p>
