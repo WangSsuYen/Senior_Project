@@ -21,7 +21,7 @@
     <div class="mb-5 bg-gradient">
         <nav class="navbar navbar-expand-lg navbar-light bg-light text-white">
             <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="#">
+                <a class="navbar-brand d-flex align-items-center" href="/clt/">
                     <img class="nav-link" style="width: 48px;" src="{% static 'backfix_icon.png' %}"
                         title="foodbone">後臺管理系統
                 </a>
@@ -33,7 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link active d-flex align-items-center" aria-current="page" href="#">
+                            <a class="nav-link active d-flex align-items-center" aria-current="page" href="/clt/basic/">
                                 <img class="nav-link" style="width: 48px;" src="{% static 'user_info_icon.png' %}"
                                     title="基本資料">基本資料
                             </a>
@@ -102,9 +102,9 @@
                         <span>or</span>註冊
                     </h2>
                     <div class="form-holder">
-                        <input type="text" class="input" placeholder="Name" />
-                        <input type="email" class="input" placeholder="Email" />
-                        <input type="password" class="input" placeholder="Password" />
+                        <input type="number" class="input" placeholder="統一編號" name="uniform_numbers" />
+                        <input type="email" class="input" placeholder="E-mail" name="email" />
+                        <input type="password" class="input" placeholder="密碼" name="psw" />
                     </div>
                     <button class="submit-btn">註冊</button>
                 </div>
@@ -114,8 +114,8 @@
                             <span>or</span>登入
                         </h2>
                         <div class="form-holder">
-                            <input type="email" class="input" placeholder="Email" />
-                            <input type="password" class="input" placeholder="Password" />
+                            <input type="number" class="input" placeholder="統一編號" name="uniform_numbers" />
+                            <input type="password" class="input" placeholder="密碼" name="psw" />
                         </div>
                         <button class="submit-btn">登入</button>
                     </div>
