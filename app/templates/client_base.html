@@ -12,7 +12,7 @@
     <!-- https://kristofferandreasen.github.io/wickedCSS/ -->
     <link rel="stylesheet" href="{%static 'wickedcss.min.css' %}">
     <!--登入畫面動畫-->
-    <link rel="stylesheet" type="text/css" href="{%static 'style.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'client_style.css'%}">
     <title>後臺管理系統</title>
     <link rel="icon" href="{% static 'backfix_icon.png' %}" type="image/png">
 </head>
@@ -95,6 +95,35 @@
     </div>
     <div class="container my-5">
         {% block content %}
+        <div class="container justify-content-center d-flex">
+            <div class="form-structor zoomer">
+                <div class="signup slide-up">
+                    <h2 class="form-title" id="signup">
+                        <span>or</span>註冊
+                    </h2>
+                    <div class="form-holder">
+                        <input type="text" class="input" placeholder="Name" />
+                        <input type="email" class="input" placeholder="Email" />
+                        <input type="password" class="input" placeholder="Password" />
+                    </div>
+                    <button class="submit-btn">註冊</button>
+                </div>
+                <div class="login ">
+                    <div class="center">
+                        <h2 class="form-title" id="login">
+                            <span>or</span>登入
+                        </h2>
+                        <div class="form-holder">
+                            <input type="email" class="input" placeholder="Email" />
+                            <input type="password" class="input" placeholder="Password" />
+                        </div>
+                        <button class="submit-btn">登入</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
 
         {% endblock content %}
@@ -109,6 +138,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
         integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
         crossorigin="anonymous"></script>
+    <script src="{%static 'client_style.js'%}"></script>
 </body>
 
 </html>
