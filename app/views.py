@@ -9,6 +9,9 @@ class Client():
     def basic(request: HttpRequest):
         return render(request, 'client_basic.html')
 
+    def menu(request: HttpRequest):
+        return render(request, 'client_menu.html')
+
 
 class Customer():
     def index(request: HttpRequest):

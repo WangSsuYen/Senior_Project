@@ -1,0 +1,77 @@
+{% extends "client_base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-3 bg-light bg-opacity-50 rounded shadow-lg p-3 mb-5 bg-body rounded">
+    <div class="row">
+        <div class="col-md-2 mt-2 justify-content-center align-items-center d-flex">
+            <img src="{%static 'image/平凡之屋.jpg'%}" class="img-thumbnail" name="meals_previews" id="meals_previews">
+        </div>
+        <div class="col-md-8 mt-2 ">
+            <div class="input-group justify-content-center align-items-center d-flex md-2 mt-2">
+                <span class="input-group-text col-md-2">餐點名稱</span>
+                <input type="text" class="form-control" placeholder="" name="meals_name" readonly>
+            </div>
+            <div class="input-group justify-content-center align-items-center d-flex md-2 mt-2">
+                <span class="input-group-text col-md-2">餐點價格</span>
+                <input type="tel" class="form-control" placeholder="" name="meals_price" readonly>
+            </div>
+            <div class="input-group justify-content-center align-items-center d-flex md-2 mt-2">
+                <label for="exampleFormControlTextarea1" class="form-label input-group-text col-md-2">餐點描述</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="meals_describe"
+                    readonly></textarea>
+            </div>
+        </div>
+        <div class="col-md-2 mt-2 align-items-center justify-content-center d-flex">
+            <div>
+                <a class="align-items-center" href="/">
+                    <img style="width: 16px;" src="{% static 'modify_icon.png' %}" title="修改">修改
+                </a>
+            </div>
+            <div>
+                <a class="align-items-center" href="/">
+                    <img style="width: 16px;" src="{% static 'remove_icon.png' %}" title="刪除">刪除
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #meals_previews {
+        max-width: 200px;
+        max-height: 200px;
+    }
+</style>
+<script>
+    // 獲取圖片上傳輸入元素
+    const fileInput = document.getElementById('formFileMultiple');
+
+    // 獲取圖片預覽元素
+    const previewImage = document.getElementById('previewImage');
+
+    // 監聽文件選擇事件
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+
+        if (file) {
+            // 創建 FileReader 物件
+            const reader = new FileReader();
+
+            // 監聽 FileReader 加載完成事件
+            reader.onload = function (e) {
+                // 將圖片預覽的 SRC 設置為所選文件的內容
+                previewImage.src = e.target.result;
+            };
+
+            // 讀取文件內容
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+
+
+{% endblock content %}

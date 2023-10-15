@@ -3,23 +3,69 @@
 {% block content %}
 <div class="container mt-3">
     <div class="container-fluid bg-light bg-opacity-50 rounded shadow-lg p-3 mb-5 bg-body rounded">
-        <div class="row " style="height: 400px;">
-            <div class="col-md-6 mt-2 justify-content-center align-items-center d-flex">
-                <figure class="figure">
-                    <figcaption class="figure-caption justify-content-center d-flex">公司頭貼</figcaption>
-                    <img id="previewImage" src="" class="figure-img img-fluid rounded" alt="Preview"
-                        style="height: 350px;">
-                </figure>
-            </div>
-            <div class="col-md-6 d-flex align-items-center justify-content-center">
-                <div class="mb-3">
-                    <label for="formFileMultiple" class="form-label justify-content-center d-flex">選擇圖片</label>
-                    <input class="form-control" type="file" id="formFileMultiple" multiple>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mt-2 justify-content-center align-items-center d-flex">
+                    <figure class="figure">
+                        <figcaption class="figure-caption justify-content-center d-flex">公司頭貼</figcaption>
+                        <img id="previewImage" src="" class="figure-img img-fluid rounded" alt="Preview"
+                            name="co_image">
+                    </figure>
+                </div>
+                <div class="col-md-6 d-flex align-items-center justify-content-center">
+                    <div class="mb-3">
+                        <label for="formFileMultiple" class="form-label justify-content-center d-flex">選擇圖片</label>
+                        <input class="form-control" type="file" id="formFileMultiple" multiple>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div>
+                <div class="input-group mb-2 mt-2  ">
+                    <span class="input-group-text col-md-2">餐廳名稱</span>
+                    <input type="text" class="form-control" placeholder="" name="rest_name">
+                </div>
+                <div class="input-group mb-2 mt-2  ">
+                    <span class="input-group-text col-md-2">餐廳地址</span>
+                    <input type="text" class="form-control" placeholder="" name="rest_address">
+                </div>
+                <div class="input-group mb-2 mt-2  ">
+                    <span class="input-group-text col-md-2">管理人</span>
+                    <input type="text" class="form-control" placeholder="" name="rest_manager">
+                </div>
+                <div class="input-group mb-2 mt-2  ">
+                    <span class="input-group-text col-md-2">餐廳電話</span>
+                    <input type="tel" class="form-control" placeholder="" name="rest_phone">
+                </div>
 
-
+                <hr>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="co_vs_rest" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">與餐廳管理者相同</label>
+                </div>
+                <div class="input-group mb-2 mt-2 ">
+                    <span class="input-group-text col-md-2">公司註冊名稱</span>
+                    <input type="text" class="form-control" placeholder="" name="co_name">
+                </div>
+                <div class="input-group mb-2 mt-2  ">
+                    <span class="input-group-text col-md-2">公司地址</span>
+                    <input type="text" class="form-control" placeholder="" name="co_address">
+                </div>
+                <div class="input-group mb-2 mt-2  ">
+                    <span class="input-group-text col-md-2">負責人</span>
+                    <input type="text" class="form-control" placeholder="" name="co_owner">
+                </div>
+                <div class="input-group mb-2 mt-2  ">
+                    <span class="input-group-text col-md-2">負責人電話</span>
+                    <input type="tel" class="form-control" placeholder="" name="owner_phone">
+                </div>
+            </div>
+            <div class="justify-content-center align-items-center d-flex mt-5">
+                <button type="submit" class="btn btn-success text-white mx-3">儲存 / Submit</button>
+                <button type="button" class="btn btn-danger text-white mx-3" onclick="location.href='/clt/'">
+                    取消 / Cancel</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -49,6 +95,37 @@
         }
     });
 </script>
+<script>
+    // 获取复选框元素
+    const checkbox = document.getElementById('flexCheckDefault');
 
+    // 抓取公司欄位及餐廳欄位
+    const restNameInput = document.querySelector('input[name="rest_name"]');
+    const restAddressInput = document.querySelector('input[name="rest_address"]');
+    const restManagerInput = document.querySelector('input[name="rest_manager"]');
+    const restPhoneInput = document.querySelector('input[name="rest_phone"]');
+    const coNameInput = document.querySelector('input[name="co_name"]');
+    const coAddressInput = document.querySelector('input[name="co_address"]');
+    const coOwnerInput = document.querySelector('input[name="co_owner"]');
+    const ownerPhoneInput = document.querySelector('input[name="owner_phone"]');
+
+    // 監聽欄位變化
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            // Checkbox被選取時，公司框內數值讚更成餐廳數值
+            coNameInput.value = restNameInput.value;
+            coAddressInput.value = restAddressInput.value;
+            coOwnerInput.value = restManagerInput.value;
+            ownerPhoneInput.value = restPhoneInput.value;
+        }
+        else {
+            // Checkbox被取消時，欄位即被清空
+            coNameInput.value = '';
+            coAddressInput.value = '';
+            coOwnerInput.value = '';
+            ownerPhoneInput.value = '';
+        }
+    });
+</script>
 
 {% endblock content %}
