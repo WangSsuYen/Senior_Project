@@ -27,4 +27,6 @@ urlpatterns = [
     path('clt/', views.Client.index),
     path("clt/basic/", views.Client.basic),
     path("clt/menu/", views.Client.menu),
+    path('clt/signup/', views.Client.signup),
+    path('clt/login/', views.Client.login),
 ]
