@@ -79,7 +79,7 @@
                     </li> -->
                     <ul class="navbar-nav justify-content-end">
                         <li class="nav-item ">
-                            <a class="nav-link d-flex align-items-center " href="#">
+                            <a class="nav-link d-flex align-items-center " href='/clt/logout/'>
                                 <img class="nav-link" style="width: 48px;" src="{% static 'logout_icon.png' %}"
                                     title="登出">登出
                             </a>
@@ -94,15 +94,19 @@
         </nav>
     </div>
     {%if succmesg %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>恭喜!</strong>{{succmesg}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-success alert-dismissible fade show " role="alert">
+            <strong >恭喜!</strong>{{succmesg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
     {% endif %}
     {% if errmesg %}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>錯誤!</strong>{{errmesg}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-center" role="alert">
+            <strong >錯誤!</strong>{{errmesg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
     {% endif %}
     <div class="container my-5">
