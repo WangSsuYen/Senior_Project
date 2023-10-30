@@ -16,12 +16,26 @@ class Client():
             return redirect('/clt/basic/')
 
     def basic(request: HttpRequest):
+        errmesg = None
         # --檢查是否已登入
         user = DataSet.check_user_login(request)
         if user is None:
             return redirect('/clt/')
         else:
-            return render(request, 'client_basic.html', {'user_logout': user})
+            if request.method == "GET":
+                user = request.session.get('uniform_numbers')
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT * FROM client_detail WHERE uniform_numbers = %s", (user, ))
+                user_info = cursor.fetchone()
+                print(user, user_info)
+                if user_info is None:
+                    errmesg = "請先填寫基本資料"
+                    return render(request, 'client_basic_info.html', {'errmesg': errmesg, 'user_logout': user})
+                else:
+                    return render(request, 'client_basic_info.html', {'user_info': user_info, 'user_logout': user})
+
+            return render(request, 'client_basic_info.html', {'user_logout': user})
 
     def menu(request: HttpRequest):
         # --檢查是否已登入
