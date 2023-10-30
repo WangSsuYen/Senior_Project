@@ -20,6 +20,7 @@ CREATE TABLE
         co_name VARCHAR(10) NOT NULL COMMENT '公司名稱',
         co_address VARCHAR(15) NOT NULL COMMENT '公司地址',
         co_owner VARCHAR(15) NOT NULL COMMENT '公司負責人',
+        owner_phone VARCHAR(15) NOT NULL COMMENT '餐廳電話',
         PRIMARY KEY (uniform_numbers),
         FOREIGN KEY (uniform_numbers) REFERENCES client(uniform_numbers)
     ) COMMENT '餐廳資訊';
