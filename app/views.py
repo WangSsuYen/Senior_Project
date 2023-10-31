@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.db import connection
 from django.utils import timezone
-import re
 from .unit import DataSet
 
 
