@@ -40,3 +40,24 @@ class DataSet():
 
         if len(self.uniform_numbers) != 8:
             return "統一編號必須為8個數字"
+
+    def user_has_details(user):
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM client_detail WHERE uniform_numbers = %s", (user, ))
+        user = cursor.fetchone()
+        if user is None:
+            return False
+        else:
+            return True
+
+
+    def check_info(user):
+        cursor = connection.cursor()
+        cursor.execute(
+            "SELECT * FROM client_detail WHERE uniform_numbers = %s", (user, ))
+        user_info = cursor.fetchone()
+        if None in user_info or "" in user_info:
+            mesg = "請完整填寫基本資料"
+            return {"mesg" : mesg , "user_info" : user_info}
+        else:
+            return {"user_info" : user_info}

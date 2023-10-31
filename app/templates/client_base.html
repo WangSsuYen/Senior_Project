@@ -119,6 +119,14 @@
         </div>
     </div>
     {% endif %}
+    {% if warnmesg %}
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-warning alert-dismissible fade show d-flex justify-content-center" role="alert">
+            <strong>注意!</strong>{{warnmesg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endif %}
     <div class="container my-5">
         {% block content %}
         <div class="container justify-content-center d-flex">

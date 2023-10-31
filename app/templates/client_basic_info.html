@@ -9,14 +9,13 @@
                 <div class="col-md-6 mt-2 justify-content-center align-items-center d-flex">
                     <figure class="figure">
                         <figcaption class="figure-caption justify-content-center d-flex">公司頭貼</figcaption>
-                        <img id="previewImage" src="" class="figure-img img-fluid rounded" alt="Preview"
-                            name="co_image">
+                        <img id="previewImage" src="" class="figure-img img-fluid rounded" alt="Preview">
                     </figure>
                 </div>
                 <div class="col-md-6 d-flex align-items-center justify-content-center">
                     <div class="mb-3">
                         <label for="formFileMultiple" class="form-label justify-content-center d-flex">選擇圖片</label>
-                        <input class="form-control" type="file" id="formFileMultiple" multiple>
+                        <input class="form-control" type="file" id="formFileMultiple" name="co_image" multiple>
                     </div>
                 </div>
             </div>
@@ -24,22 +23,22 @@
                 <div class="input-group mb-2 mt-2  ">
                     <span class="input-group-text col-md-2">餐廳名稱</span>
                     <input type="text" class="form-control" placeholder="" name="rest_name"
-                        value="{{request.user_info.2}}">
+                        value="{{user_info.2}}">
                 </div>
                 <div class="input-group mb-2 mt-2  ">
                     <span class="input-group-text col-md-2">餐廳地址</span>
                     <input type="text" class="form-control" placeholder="" name="rest_address"
-                        value="{{request.user_info.3}}">
+                        value="{{user_info.3}}">
                 </div>
                 <div class="input-group mb-2 mt-2  ">
                     <span class="input-group-text col-md-2">管理人</span>
                     <input type="text" class="form-control" placeholder="" name="rest_manager"
-                        value="{{request.user_info.4}}">
+                        value="{{user_info.4}}">
                 </div>
                 <div class="input-group mb-2 mt-2  ">
                     <span class="input-group-text col-md-2">餐廳電話</span>
                     <input type="tel" class="form-control" placeholder="" name="rest_phone"
-                        value="{{request.user_info.5}}">
+                        value="{{user_info.5}}">
                 </div>
 
                 <hr>
@@ -50,22 +49,22 @@
                 <div class="input-group mb-2 mt-2 ">
                     <span class="input-group-text col-md-2">公司註冊名稱</span>
                     <input type="text" class="form-control" placeholder="" name="co_name"
-                        value="{{request.user_info.6}}">
+                        value="{{user_info.6}}">
                 </div>
                 <div class="input-group mb-2 mt-2  ">
                     <span class="input-group-text col-md-2">公司地址</span>
                     <input type="text" class="form-control" placeholder="" name="co_address"
-                        value="{{request.user_info.7}}">
+                        value="{{user_info.7}}">
                 </div>
                 <div class="input-group mb-2 mt-2  ">
                     <span class="input-group-text col-md-2">負責人</span>
                     <input type="text" class="form-control" placeholder="" name="co_owner"
-                        value="{{request.user_info.8}}">
+                        value="{{user_info.8}}">
                 </div>
                 <div class="input-group mb-2 mt-2  ">
                     <span class="input-group-text col-md-2">負責人電話</span>
                     <input type="tel" class="form-control" placeholder="" name="owner_phone"
-                        value="{{request.user_info.9}}">
+                        value="{{user_info.9}}">
                 </div>
             </div>
             <div class="justify-content-center align-items-center d-flex mt-5">
