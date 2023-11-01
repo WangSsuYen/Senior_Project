@@ -9,7 +9,7 @@ CREATE TABLE client (
 CREATE TABLE
     client_detail (
         uniform_numbers VARCHAR(10) NOT NULL COMMENT '統一編號',
-        co_image VARCHAR(10) NOT NULL COMMENT '公司圖片',
+        co_image TEXT NOT NULL COMMENT '公司圖片',
         rest_name VARCHAR(10) NOT NULL COMMENT '餐廳名稱',
         rest_address VARCHAR(15) NOT NULL COMMENT '餐廳地址',
         rest_manager VARCHAR(5) NOT NULL COMMENT '餐廳負責人',
@@ -21,3 +21,5 @@ CREATE TABLE
         PRIMARY KEY (uniform_numbers),
         FOREIGN KEY (uniform_numbers) REFERENCES client(uniform_numbers)
     ) COMMENT '餐廳資訊';
+
+ALTER TABLE client_detail MODIFY co_image TEXT NOT NULL COMMENT '公司圖片';

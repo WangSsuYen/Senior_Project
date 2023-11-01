@@ -3,7 +3,8 @@ from django.http import HttpRequest, HttpResponse
 from django.db import connection
 from django.utils import timezone
 import re
-
+from django.core.files.storage import default_storage , Storage
+from django.core.files.base import ContentFile
 
 class DataSet():
     def __init__(self, uniform_numbers, client_password, password_confirm):
@@ -50,14 +51,23 @@ class DataSet():
         else:
             return True
 
-
     def check_info(user):
         cursor = connection.cursor()
         cursor.execute(
             "SELECT * FROM client_detail WHERE uniform_numbers = %s", (user, ))
         user_info = cursor.fetchone()
-        if None in user_info or "" in user_info:
+        if user_info is None:
+            mesg = "歡迎蒞臨，請先填寫完整資料再繼續唷!"
+            return {"mesg" : mesg , "user_info" : user_info}
+        elif None in user_info or "" in user_info :
             mesg = "請完整填寫基本資料"
             return {"mesg" : mesg , "user_info" : user_info}
         else:
             return {"user_info" : user_info}
+
+
+    def handle_uploaded_file(file , destination_path):
+        with open(destination_path , 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+    #wb+註解：以二進位格式打開一個文件，允許讀寫數據，如果文件存在則覆蓋，如果文件不存在則創建

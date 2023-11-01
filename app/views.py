@@ -3,7 +3,10 @@ from django.http import HttpRequest, HttpResponse
 from django.db import connection
 from django.utils import timezone
 from .unit import DataSet
-
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import os
+from django.conf import settings
 
 class Client():
     def index(request: HttpRequest):
@@ -31,11 +34,11 @@ class Client():
 
                 warnmesg = decide.get('mesg')
                 user_info = decide.get('user_info')
+                print(user_info)
                 return render(request, 'client_basic_info.html', {'warnmesg': warnmesg , 'user_info': user_info , 'user_logout': user})
 
             else:#method == "POST"
                 user = request.session.get('uniform_numbers')
-                co_image = request.POST.get('co_image')
                 rest_name = request.POST.get('rest_name')
                 rest_address = request.POST.get('rest_address')
                 rest_manager = request.POST.get('rest_manager')
@@ -44,13 +47,28 @@ class Client():
                 co_address = request.POST.get('co_address')
                 co_owner = request.POST.get('co_owner')
                 owner_phone = request.POST.get('owner_phone')
+
+                #處理文件上傳
+                co_image = request.FILES.get('co_image')
+                if co_image :
+                    # 獲取檔案類型
+                    file_extension = co_image.name.split('.')[-1]
+                    # 定義檔案名稱
+                    file_name = f"{user}.{file_extension}"
+                    #文件路徑
+                    destination_path = os.path.join(settings.MEDIA_ROOT, "co_headshot/" + file_name)
+                    #文件上傳
+                    DataSet.handle_uploaded_file(co_image , destination_path)
+                else:
+                    file_name = None
+
                 cursor = connection.cursor()
 
                 #判斷是否有該使用者的資料
                 #無資料，以新增方式執行
                 if not DataSet.user_has_details(user):
                     try:
-                        cursor.execute("INSERT INTO client_detail (uniform_numbers, co_image, rest_name, rest_address, rest_manager, rest_phone, co_name, co_address, co_owner, owner_phone) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(user, co_image, rest_name, rest_address, rest_manager, rest_phone, co_name, co_address, co_owner, owner_phone))
+                        cursor.execute("INSERT INTO client_detail (uniform_numbers, co_image, rest_name, rest_address, rest_manager, rest_phone, co_name, co_address, co_owner, owner_phone) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(user, file_name, rest_name, rest_address, rest_manager, rest_phone, co_name, co_address, co_owner, owner_phone))
                         #檢查資料是否完整
                         decide = DataSet.check_info(user)
                         warnmesg = decide.get('mesg')
@@ -69,7 +87,10 @@ class Client():
                 #有資料，以更新方式執行
                 else:
                     try:
-                        cursor.execute("UPDATE client_detail SET co_image = %s, rest_name = %s, rest_address = %s, rest_manager = %s, rest_phone = %s, co_name = %s, co_address = %s, co_owner = %s, owner_phone = %s WHERE uniform_numbers = %s",(co_image, rest_name, rest_address, rest_manager, rest_phone, co_name, co_address, co_owner, owner_phone, user))
+                        if co_image:
+                            cursor.execute("UPDATE client_detail SET co_image = %s, rest_name = %s, rest_address = %s, rest_manager = %s, rest_phone = %s, co_name = %s, co_address = %s, co_owner = %s, owner_phone = %s WHERE uniform_numbers = %s",(file_name, rest_name, rest_address, rest_manager, rest_phone, co_name, co_address, co_owner, owner_phone, user))
+                        else:
+                            cursor.execute("UPDATE client_detail SET rest_name = %s, rest_address = %s, rest_manager = %s, rest_phone = %s, co_name = %s, co_address = %s, co_owner = %s, owner_phone = %s WHERE uniform_numbers = %s",(rest_name, rest_address, rest_manager, rest_phone, co_name, co_address, co_owner, owner_phone, user))
 
                         decide = DataSet.check_info(user)
                         warnmesg = decide.get('mesg')
@@ -83,7 +104,7 @@ class Client():
                             return render(request, 'client_basic_info.html', {'succmesg': succmesg , 'user_info': user_info , 'user_logout': user})
                     except Exception as err:
                         errmesg = err
-                        return render(request, 'client_basic_info.html', {'errmesg': errmesg , 'user_info': user_info , 'user_logout': user})
+                        return render(request, 'client_basic_info.html', {'errmesg': errmesg , 'user_logout': user})
 
 
 

@@ -3,13 +3,13 @@
 {% block content %}
 <div class="container mt-3">
     <div class="container-fluid bg-light bg-opacity-50 rounded shadow-lg p-3 mb-5 bg-body rounded">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
                 <div class="col-md-6 mt-2 justify-content-center align-items-center d-flex">
                     <figure class="figure">
                         <figcaption class="figure-caption justify-content-center d-flex">公司頭貼</figcaption>
-                        <img id="previewImage" src="" class="figure-img img-fluid rounded" alt="Preview">
+                        <img id="previewImage" src="{% static 'media/co_headshot/'%}{{user_info.1}}" class="figure-img img-fluid rounded" alt="Preview">
                     </figure>
                 </div>
                 <div class="col-md-6 d-flex align-items-center justify-content-center">
