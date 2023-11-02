@@ -1,319 +1,344 @@
 {% extends "customer_base.html" %}
 {% load static %}
 {% block content %}
+<div class="row">
+    <div class="col-md-2">
+        <div class="col-md-12 position-sticky shadow-lg p-3 mb-5 bg-body rounded" style="top: 250px;">
+            <ul class="list-group">
+                <!-- for -->
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <input class="form-check-input me-2" type="checkbox" value="">
+                        A apple
+                    </div>
+                    <span class="badge bg-primary rounded-pill">15</span>
+                </li>
 
-<div class="container-fluid ">
-    <span class="fs-2 text-secondary">優惠專區</span>
-    <hr>
-    <div class="container justify-content-center d-flex">
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem;">
-                                <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">牛排</h5>
-                                    <p class="card-text">使用澳洲牛肉</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
+                <!-- endfor -->
+            </ul>
+            <div class="d-flex align-items-center justify-content-center mt-3">
+                <div class="row">
+                    <a class="btn btn-dark col" href="/">
+                        <img class="col" style="width: 48px;" src="/static/search_icon.png" title="搜尋">搜尋
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="container-fluid ">
+            <span class="fs-2 text-secondary">優惠專區</span>
+            <hr>
+            <div class="justify-content-center d-flex">
+                <div id="carouselExampleControls" class="carousel slide container-fluid" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem;">
+                                        <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">牛排</h5>
+                                            <p class="card-text">使用澳洲牛肉</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem;">
+                                        <img src="{% static  'image/pork.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">豬排</h5>
+                                            <p class="card-text">使用台灣山地野生黑豬</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem;">
+                                        <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">羊排</h5>
+                                            <p class="card-text">使用台灣野生山羌</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem;">
+                                        <img src="{% static 'image/chicken.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">雞排排</h5>
+                                            <p class="card-text">使用玉山山脈上放山雞</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem;">
-                                <img src="{% static  'image/pork.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">豬排</h5>
-                                    <p class="card-text">使用台灣山地野生黑豬</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
+                        <div class="carousel-item ">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem; ">
+                                        <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">牛排</h5>
+                                            <p class="card-text">使用澳洲牛肉</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem;">
+                                        <img src="{% static 'image/pork.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">豬排</h5>
+                                            <p class="card-text">使用台灣山地野生黑豬</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem;">
+                                        <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">羊排</h5>
+                                            <p class="card-text">使用台灣野生山羌</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem; ">
+                                        <img src="{% static 'image/chicken.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">雞排排</h5>
+                                            <p class="card-text">使用玉山山脈上放山雞</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem;">
-                                <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">羊排</h5>
-                                    <p class="card-text">使用台灣野生山羌</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
+                        <div class="carousel-item ">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem; ">
+                                        <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">牛排</h5>
+                                            <p class="card-text">使用澳洲牛肉</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem;">
-                                <img src="{% static 'image/chicken.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">雞排排</h5>
-                                    <p class="card-text">使用玉山山脈上放山雞</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem; ">
+                                        <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">羊排</h5>
+                                            <p class="card-text">使用台灣野生山羌</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem; ">
+                                        <img src="{% static 'image/pork.jpg' %}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">豬排</h5>
+                                            <p class="card-text">使用台灣山地野生黑豬</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card" style="width: 15rem;">
+                                        <img src="{% static 'image/chicken.jpg'%}" class="card-img-top" alt="..."
+                                            style="width:200px;height:200px;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">雞排排</h5>
+                                            <p class="card-text">使用玉山山脈上放山雞</p>
+                                            <a href="/" class="btn btn-primary">前往訂餐</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
-                <div class="carousel-item ">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem; ">
-                                <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">牛排</h5>
-                                    <p class="card-text">使用澳洲牛肉</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem;">
-                                <img src="{% static 'image/pork.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">豬排</h5>
-                                    <p class="card-text">使用台灣山地野生黑豬</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem;">
-                                <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">羊排</h5>
-                                    <p class="card-text">使用台灣野生山羌</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem; ">
-                                <img src="{% static 'image/chicken.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">雞排排</h5>
-                                    <p class="card-text">使用玉山山脈上放山雞</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
-                                </div>
+            </div>
+        </div>
+        <div class="container-fluid ">
+            <span class="fs-2 text-secondary">所有餐廳</span>
+            <hr>
+            <div class="container-fluid justify-content-center d-flex">
+                <div class="row container-fluid">
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/平凡之屋.jpg'%}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">平凡之屋</h5>
+                                <p class="card-text">平凡的吃不平凡的味道</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="carousel-item ">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem; ">
-                                <img src="{% static 'image/steak.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">牛排</h5>
-                                    <p class="card-text">使用澳洲牛肉</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
-                                </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/不夜侯.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">不夜侯</h5>
+                                <p class="card-text">不喝不知味</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem; ">
-                                <img src="{% static 'image/goat.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">羊排</h5>
-                                    <p class="card-text">使用台灣野生山羌</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
-                                </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/fries.jpg'%}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">詐欺犯</h5>
+                                <p class="card-text">炸妻香酥脆</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem; ">
-                                <img src="{% static 'image/pork.jpg' %}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">豬排</h5>
-                                    <p class="card-text">使用台灣山地野生黑豬</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
-                                </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/noodle.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">鹿港麵線糊</h5>
+                                <p class="card-text">用鼻孔吸也吃得完</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card" style="width: 15rem;">
-                                <img src="{% static 'image/chicken.jpg'%}" class="card-img-top" alt="..."
-                                    style="width:200px;height:200px;">
-                                <div class="card-body">
-                                    <h5 class="card-title">雞排排</h5>
-                                    <p class="card-text">使用玉山山脈上放山雞</p>
-                                    <a href="/" class="btn btn-primary">前往訂餐</a>
-                                </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/seafood.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">響石天堂</h5>
+                                <p class="card-text">通風套餐</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/wosami.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">生吃活史</h5>
+                                <p class="card-text">滿滿寄生蟲的生魚片</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+
+            <span class="container" style="height:50px;"></span>
+
+            <div class="container-fluid justify-content-center d-flex">
+                <div class="row container-fluid">
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/平凡之屋.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">平凡之屋</h5>
+                                <p class="card-text">平凡的吃不平凡的味道</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/不夜侯.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">不夜侯</h5>
+                                <p class="card-text">不喝不知味</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/fries.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">詐欺犯</h5>
+                                <p class="card-text">炸妻香酥脆</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/noodle.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">鹿港麵線糊</h5>
+                                <p class="card-text">用鼻孔吸也吃得完</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/seafood.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">響石天堂</h5>
+                                <p class="card-text">通風套餐</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="card" style="width: 13rem;">
+                            <img src="{% static 'image/wosami.jpg' %}" class="card-img-top" alt=""
+                                style="width:200px;height:200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">生吃活史</h5>
+                                <p class="card-text">滿滿寄生蟲的生魚片</p>
+                                <a href="#" class="btn btn-primary">點餐去</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="container-fluid ">
-    <span class="fs-2 text-secondary">所有餐廳</span>
-    <hr>
-    <div class="container justify-content-center d-flex">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/平凡之屋.jpg'%}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">平凡之屋</h5>
-                        <p class="card-text">平凡的吃不平凡的味道</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/不夜侯.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">不夜侯</h5>
-                        <p class="card-text">不喝不知味</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/fries.jpg'%}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">詐欺犯</h5>
-                        <p class="card-text">炸妻香酥脆</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/noodle.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">鹿港麵線糊</h5>
-                        <p class="card-text">用鼻孔吸也吃得完</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/seafood.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">響石天堂</h5>
-                        <p class="card-text">通風套餐</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/wosami.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">生吃活史</h5>
-                        <p class="card-text">滿滿寄生蟲的生魚片</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <span class="container" style="height:50px;"></span>
-
-    <div class="container justify-content-center d-flex">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/平凡之屋.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">平凡之屋</h5>
-                        <p class="card-text">平凡的吃不平凡的味道</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/不夜侯.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">不夜侯</h5>
-                        <p class="card-text">不喝不知味</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/fries.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">詐欺犯</h5>
-                        <p class="card-text">炸妻香酥脆</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/noodle.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">鹿港麵線糊</h5>
-                        <p class="card-text">用鼻孔吸也吃得完</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/seafood.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">響石天堂</h5>
-                        <p class="card-text">通風套餐</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="card" style="width: 13rem;">
-                    <img src="{% static 'image/wosami.jpg' %}" class="card-img-top" alt=""
-                        style="width:200px;height:200px;">
-                    <div class="card-body">
-                        <h5 class="card-title">生吃活史</h5>
-                        <p class="card-text">滿滿寄生蟲的生魚片</p>
-                        <a href="#" class="btn btn-primary">點餐去</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 

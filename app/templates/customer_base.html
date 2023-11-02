@@ -12,8 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
     <!-- https://kristofferandreasen.github.io/wickedCSS/ -->
     <link rel="stylesheet" href="{%static 'wickedcss.min.css' %}">
-    <!--登入畫面動畫-->
-    <link rel="stylesheet" type="text/css" href="{%static 'style.css'%}">
     <title>點餐系統</title>
     <link rel="icon" href="{% static 'bone_icon.png' %}" type="image/png">
 </head>
@@ -53,26 +51,35 @@
                                     title="會員">會員專區
                             </a>
                             <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="/cum/login/">登入</a>
+                                <li class="dropdown-item">
+                                    <a class="nav-link d-flex align-items-center" href="/cum/login/">
+                                        <img class="nav-link" style="width: 48px;" src="{% static 'login_icon.png' %}"
+                                            title="登入">登入
+                                    </a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">註冊</a>
+                                <li class="dropdown-item">
+                                    <a class="nav-link d-flex align-items-center" href="/">
+                                        <img class="nav-link" style="width: 48px;" src="{% static 'signup_icon.png' %}"
+                                            title="註冊">註冊
+                                    </a>
+                                </li>
+                                <li class="dropdown-item">
+                                    <a class="nav-link d-flex align-items-center" href="/">
+                                        <img class="nav-link" style="width: 48px;" src="{% static 'market_icon.png' %}"
+                                            title="購物車">購物車
+                                    </a>
                                 </li>
                                 {% comment %} {% if request.cookies.get('user_id') %} {% endcomment %}
-                                <li>
+                                <li class="dropdown-item">
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">登出</a>
+                                <li class="dropdown-item">
+                                    <a class="nav-link d-flex align-items-center" href="/">
+                                        <img class="nav-link" style="width: 48px;" src="{% static 'logout_icon.png' %}"
+                                            title="登出">登出
+                                    </a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="/">
-                                <img class="nav-link" style="width: 48px;" src="{% static 'market_icon.png' %}"
-                                    title="購物車">購物車
-                            </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="/clt">
@@ -85,7 +92,7 @@
             </div>
         </nav>
     </header>
-    <div class="container my-5">
+    <div class="container-fluid my-5">
         {% block content %}
 
 
