@@ -1,11 +1,12 @@
-
-CREATE TABLE client (
+CREATE TABLE
+    client (
         uniform_numbers VARCHAR(10) PRIMARY KEY COMMENT '統一編號',
         client_password VARCHAR(10) NOT NULL COMMENT '密碼',
         creattime datetime NOT NULL COMMENT '創建時間'
-    )COMMENT '客戶資料';
+    ) COMMENT '客戶資料';
 
 --建立餐廳資訊明細表
+
 CREATE TABLE
     client_detail (
         uniform_numbers VARCHAR(10) NOT NULL COMMENT '統一編號',
@@ -22,4 +23,25 @@ CREATE TABLE
         FOREIGN KEY (uniform_numbers) REFERENCES client(uniform_numbers)
     ) COMMENT '餐廳資訊';
 
-ALTER TABLE client_detail MODIFY co_image TEXT NOT NULL COMMENT '公司圖片';
+ALTER TABLE
+    client_detail MODIFY co_image TEXT NOT NULL COMMENT '公司圖片';
+
+-- 建立店家菜單表
+
+CREATE TABLE
+    client_menu (
+        meals_number INT NOT NULL AUTO_INCREMENT COMMENT '餐點編號',
+        meals_image TEXT NOT NULL COMMENT '餐點圖片',
+        meals_name VARCHAR(10) NOT NULL COMMENT '餐點名稱',
+        meals_price INT NOT NULL COMMENT '餐點價格',
+        meals_description VARCHAR(50) NOT NULL COMMENT '餐點描述',
+        meals_status INT NOT NULL COMMENT '餐點狀態',
+        meals_category VARCHAR(3) NOT NULL COMMENT '餐點類別',
+        meals_owner VARCHAR(15) NOT NULL COMMENT '餐點歸屬餐廳',
+        meals_creattime datetime NOT NULL COMMENT '創建時間',
+        PRIMARY KEY (meals_number),
+        FOREIGN KEY (meals_owner) REFERENCES client(uniform_numbers)
+    ) COMMENT '餐點資訊';
+
+ALTER TABLE
+    client_menu CHANGE meals_number meals_number INT NOT NULL AUTO_INCREMENT COMMENT '餐點編號';

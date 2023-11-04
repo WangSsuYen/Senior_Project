@@ -3,8 +3,9 @@ from django.http import HttpRequest, HttpResponse
 from django.db import connection
 from django.utils import timezone
 import re
-from django.core.files.storage import default_storage , Storage
-from django.core.files.base import ContentFile
+import os
+from django.conf import settings
+
 
 class DataSet():
     def __init__(self, uniform_numbers, client_password, password_confirm):
@@ -44,7 +45,8 @@ class DataSet():
 
     def user_has_details(user):
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM client_detail WHERE uniform_numbers = %s", (user, ))
+        cursor.execute(
+            "SELECT * FROM client_detail WHERE uniform_numbers = %s", (user, ))
         user = cursor.fetchone()
         if user is None:
             return False
@@ -58,16 +60,36 @@ class DataSet():
         user_info = cursor.fetchone()
         if user_info is None:
             mesg = "歡迎蒞臨，請先填寫完整資料再繼續唷!"
-            return {"mesg" : mesg , "user_info" : user_info}
-        elif None in user_info or "" in user_info :
+            return {"mesg": mesg, "user_info": user_info}
+        elif None in user_info or "" in user_info:
             mesg = "請完整填寫基本資料"
-            return {"mesg" : mesg , "user_info" : user_info}
+            return {"mesg": mesg, "user_info": user_info}
         else:
-            return {"user_info" : user_info}
+            return {"user_info": user_info}
 
-
-    def handle_uploaded_file(file , destination_path):
-        with open(destination_path , 'wb+') as destination:
+    def handle_uploaded_file(file, destination_path):
+        with open(destination_path, 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
-    #wb+註解：以二進位格式打開一個文件，允許讀寫數據，如果文件存在則覆蓋，如果文件不存在則創建
+    # wb+註解：以二進位格式打開一個文件，允許讀寫數據，如果文件存在則覆蓋，如果文件不存在則創建
+
+    def create_user_folder(uniform_numbers):
+        # 指定用户文件夹的路径
+        user_folder = os.path.join(
+            settings.MEDIA_ROOT, f"menu/{uniform_numbers}/")
+    # 检查文件夹是否已存在，如果不存在则创建它
+        if not os.path.exists(user_folder):
+            os.makedirs(user_folder)
+        return user_folder
+
+    #
+
+    # def check_menu(user):
+    #     cursor = connection.cursor()
+    #     cursor.execute(
+    #         "SELECT * FROM menu WHERE uniform_numbers = %s", (user, ))
+    #     user_menu = cursor.fetchall()
+    #     if user_menu is None:
+    #         return False
+    #     else:
+    #         return user_menu
