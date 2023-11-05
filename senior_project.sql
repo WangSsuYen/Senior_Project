@@ -35,7 +35,7 @@ CREATE TABLE
         meals_name VARCHAR(10) NOT NULL COMMENT '餐點名稱',
         meals_price INT NOT NULL COMMENT '餐點價格',
         meals_description VARCHAR(50) NOT NULL COMMENT '餐點描述',
-        meals_status INT NOT NULL COMMENT '餐點狀態',
+        meals_status VARCHAR(2) NOT NULL COMMENT '餐點狀態',
         meals_category VARCHAR(3) NOT NULL COMMENT '餐點類別',
         meals_owner VARCHAR(15) NOT NULL COMMENT '餐點歸屬餐廳',
         meals_creattime datetime NOT NULL COMMENT '創建時間',

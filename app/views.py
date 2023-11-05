@@ -117,6 +117,20 @@ class Client():
         if user is None:
             return redirect('/clt/')
         else:
+            if request.method == "GET":
+                user = request.session.get('uniform_numbers')
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT * FROM client_menu WHERE meals_owner = %s", (user, ))
+
+                # 獲取所有欄位名稱
+                column_names = [desc[0] for desc in cursor.description]
+                # 將查詢到的資料轉換為dict
+                user_menu = [dict(zip(column_names, row))
+                             for row in cursor.fetchall()]
+                print(user_menu)
+                return render(request, 'client_menu.html', {'user_menu': user_menu, 'user_logout': user})
+
             return render(request, 'client_menu.html', {'user_logout': user})
 
     def menu_add(request: HttpRequest):
@@ -150,7 +164,7 @@ class Client():
                 cursor.execute("INSERT INTO client_menu (meals_image, meals_name, meals_price, meals_category, meals_status, meals_description, meals_creattime, meals_owner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (
                     file_name, menu_name, menu_price, menu_category, menu_type, menu_description, creatime, user))
                 succmesg = "菜單新增成功"
-                return render(request, 'client_menu.html', {'succmesg': succmesg, 'user_logout': user})
+                return redirect('/clt/menu/')
             except Exception as err:
                 errmesg = err
                 return render(request, 'client_menu.html', {'errmesg': errmesg, 'user_logout': user})
@@ -212,8 +226,8 @@ class Client():
         return render(request, 'client_base.html', {'errmesg': errmesg})
 
     def logout(request: HttpRequest):
-        request.session.clear()  # 清出所有session資料
-        # del request.session['uniform_numbers'] #清除session特定指定資料
+        # request.session.clear()  # 清出所有session資料
+        del request.session['uniform_numbers']  # 清除session特定指定資料
         return redirect("/clt/")
 
 

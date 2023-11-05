@@ -1,5 +1,6 @@
 {% extends "client_base.html" %}
 {% load static %}
+(% load ifequal %}
 {% block content %}
 <div class="container-fluid row">
     <div class="col-md-2">
@@ -33,71 +34,78 @@
                 <table class="table">
                     <thead class=" table-dark">
                         <tr>
-                            <th scope="col">餐點狀態</th>
-                            <th scope="col">餐點類別</th>
-                            <th scope="col">餐點照片</th>
-                            <th scope="col">餐點名稱</th>
-                            <th scope="col">餐點價錢</th>
-                            <th scope="col">餐點描述</th>
-                            <th scope="col">餐點操作</th>
+                            <th class="col-md-1" scope="col">狀態</th>
+                            <th class="col-md-1" scope="col">類別</th>
+                            <th class="col-md-2" scope="col">照片</th>
+                            <th class="col-md-2" scope="col">名稱</th>
+                            <th class="col-md-2" scope="col">價錢</th>
+                            <th class="col-md-2" scope="col">描述</th>
+                            <th class="col-md-2" scope="col">操作</th>
                         </tr>
                     </thead>
-                    <!-- for -->
+                    {% for item in user_menu %}
                     <tbody>
                         <tr class="align-middle">
                             <td>
                                 <div class="form-check justify-content-center d-flex">
-                                    <input class="form-check-input" type="radio" name="meals_status" id="meals_status"
-                                        value="1" checked>
-                                    <label class="form-check-label" for="meals_status">上線</label>
+                                    <input class="form-check-input" type="radio"
+                                        name="meals_status_{{item.meals_number}}"
+                                        id="meals_status_{{item.meals_number}}" value="1"
+                                        {% if item.meals_status == "1" %} checked {% endif %}>
+                                    <label class="form-check-label" for="meals_status_{{item.meals_number}}">上線</label>
                                 </div>
                                 <br>
                                 <div class="form-check justify-content-center d-flex">
-                                    <input class="form-check-input" type="radio" name="meals_status" id="meals_status"
-                                        value="0">
-                                    <label class="form-check-label" for="meals_status">
-                                        下線
-                                    </label>
+                                    <input class="form-check-input" type="radio"
+                                        name="meals_status_{{item.meals_number}}"
+                                        id="meals_status_{{item.meals_number}}" value="0"
+                                        {% if item.meals_status == "0" %} checked {% endif %}>
+                                    <label class="form-check-label" for="meals_status_{{item.meals_number}}">下線</label>
                                 </div>
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="meals_status" name="meals_status" value=''
-                                    readonly>
+                                <input type="text" class="form-control" id="meals_status" name="meals_status"
+                                    value='{{item.meals_category}}' readonly>
                             </td>
                             <td>
-                                <img src="{%static 'image/平凡之屋.jpg'%}" class="img-thumbnail" name="meals_previews"
-                                    style="height: 120px;width: 120px;">
+                                <img src="{%static 'media/menu/'%}{{item.meals_owner}}/{{item.meals_image}}"
+                                    class="img-thumbnail" name="meals_previews" style="height: 120px;width: 120px;">
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="meals_name" name="meals_name" value=''
-                                    readonly>
+                                <input type="text" class="form-control" id="meals_name" name="meals_name"
+                                    value='{{item.meals_name}}' readonly>
                             </td>
                             <td>
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
                                     <input type="text" class="form-control" id="meals_prices" name="meals_prices"
-                                        value='' aria-label="Amount (to the nearest dollar)" readonly>
+                                        value='{{item.meals_price}}' aria-label="Amount (to the nearest dollar)"
+                                        readonly>
                                 </div>
                             </td>
                             <td>
-                                <textarea class="form-control" name="meals_describe" value="" readonly></textarea>
+                                <textarea class="form-control" name="meals_meals_description"
+                                    readonly>{{item.meals_description}}</textarea>
                             </td>
                             <td>
                                 <div class="justify-content-center d-flex">
                                     <a href="/stud/?a=u&q={{item.meals_name}}">
+                                        <button type="button" class="btn btn-outline-secondary mt-3"
+                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
                                         <img style="width:16px " src="{% static 'modify_icon.png' %} " title="修改">修改
                                     </a>
                                 </div>
                                 <br>
                                 <div class="justify-content-center d-flex">
                                     <a href="/stud/?a=d&q={{item.meals_name}}">
+                                        <button type="button" class="btn btn-outline-secondary mt-3">
                                         <img style="width:16px " src="{% static 'remove_icon.png' %}" title="刪除">刪除
                                     </a>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
-                    <!-- endfor -->
+                    {% endfor %}
                 </table>
                 <div class="justify-content-center d-flex align-items-center">
                     <button type="button" class="btn btn-outline-secondary mt-3 " data-bs-toggle="modal"
@@ -197,6 +205,86 @@
     </div>
 </div>
 
+
+<!-- updateitem.Modal未完成 -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title " id="staticBackdropLabel">餐點新增</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/clt/menu/add/" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mt-2 justify-content-center align-items-center d-flex">
+                        <figure class="figure">
+                            <figcaption class="figure-caption justify-content-center d-flex">餐點圖像</figcaption>
+                            <img id="previewImage" src="" class="figure-img img-fluid rounded"
+                                style="height: 80;width: 80;">
+                        </figure>
+                    </div>
+                    <div class="mt-3 d-flex align-items-center justify-content-center">
+                        <div class="mb-3">
+                            <label for="formFileMultiple" class="form-label justify-content-center d-flex">選擇圖片</label>
+                            <input class="form-control" type="file" id="formFileMultiple" name="meals_image" multiple>
+                        </div>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="meals_status" id="add_meals_status" value="1"
+                            checked>
+                        <label class="form-check-label" for="add_meals_status">
+                            上線
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="meals_status" id="add_meals_status"
+                            value="0">
+                        <label class="form-check-label" for="add_meals_status">
+                            下線
+                        </label>
+                    </div>
+                    <div class="form-floating mb-3 mt-3">
+                        <input type="text" class="form-control" id="floatingItemName" placeholder="餐點名稱"
+                            name="meals_name">
+                        <label for="floatingItemName">餐點名稱</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="tel" class="form-control" id="floatingItemPrices" placeholder="餐點價錢"
+                            name="meals_price">
+                        <label for="floatingItemPrices">餐點價錢</label>
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-select" aria-label="Default select example" name="meals_category">
+                            <option selected>請選擇餐點類型</option>
+                            <option value="1">主食</option>
+                            <option value="2">炒類</option>
+                            <option value="3">炸物</option>
+                            <option value="4">燒烤</option>
+                            <option value="5">清蒸</option>
+                            <option value="6">火鍋</option>
+                            <option value="7">甜點</option>
+                            <option value="8">飲料</option>
+                            <option value="9">套餐</option>
+                            <option value="10">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="粉好吃..." id="floatingTextarea"
+                            name="meals_description"></textarea>
+                        <label for="floatingTextarea">餐點描述</label>
+                    </div>
+                    <div class="modal-footer mt-5">
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal">儲存</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     #meals_previews {
