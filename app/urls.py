@@ -25,11 +25,12 @@ urlpatterns = [
 
     path('clt/', views.Client.index),
     path("clt/basic/", views.Client.basic),
-    path("clt/menu/", views.Client.menu),
+    path("clt/menu/", views.Client.menu , name='menu'),
     path('clt/signup/', views.Client.signup),
     path('clt/login/', views.Client.login),
     path('clt/logout/', views.Client.logout),
     path('clt/menu/add/', views.Client.menu_add),
+    path('clt/menu/update/', views.Client.menu_update),
 
 
 ]

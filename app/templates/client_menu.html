@@ -89,17 +89,22 @@
                             </td>
                             <td>
                                 <div class="justify-content-center d-flex">
-                                    <a href="/stud/?a=u&q={{item.meals_name}}">
-                                        <button type="button" class="btn btn-outline-secondary mt-3"
-                                            data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
-                                        <img style="width:16px " src="{% static 'modify_icon.png' %} " title="修改">修改
+                                    <a href="#" class="btn btn-outline-secondary mt-3 modify-button"
+                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                        data-meals-name="{{item.meals_name}}"
+                                        data-meals-price="{{item.meals_price}}"
+                                        data-meals-status="{{item.meals_status}}"
+                                        data-meals-category="{{item.meals_category}}"
+                                        data-meals-description="{{item.meals_description}}"
+                                        data-meals-image="{%static 'media/menu/'%}{{item.meals_owner}}/{{item.meals_image}}">
+                                        <img style="width:16px " src="{% static 'modify_icon.png' %}" title="修改">修改
                                     </a>
                                 </div>
                                 <br>
                                 <div class="justify-content-center d-flex">
                                     <a href="/stud/?a=d&q={{item.meals_name}}">
                                         <button type="button" class="btn btn-outline-secondary mt-3">
-                                        <img style="width:16px " src="{% static 'remove_icon.png' %}" title="刪除">刪除
+                                            <img style="width:16px " src="{% static 'remove_icon.png' %}" title="刪除">刪除
                                     </a>
                                 </div>
                             </td>
@@ -216,19 +221,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" action="/clt/menu/add/" enctype="multipart/form-data">
+                <form method="post" action="/clt/menu/update/" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mt-2 justify-content-center align-items-center d-flex">
                         <figure class="figure">
                             <figcaption class="figure-caption justify-content-center d-flex">餐點圖像</figcaption>
-                            <img id="previewImage" src="" class="figure-img img-fluid rounded"
-                                style="height: 80;width: 80;">
+                            <img id="previewImage2" src="" class="figure-img img-fluid rounded"
+                                style="height: 80;width: 80;" >
                         </figure>
                     </div>
                     <div class="mt-3 d-flex align-items-center justify-content-center">
                         <div class="mb-3">
-                            <label for="formFileMultiple" class="form-label justify-content-center d-flex">選擇圖片</label>
-                            <input class="form-control" type="file" id="formFileMultiple" name="meals_image" multiple>
+                            <label for="formFileMultiple2" class="form-label justify-content-center d-flex">選擇圖片</label>
+                            <input class="form-control" type="file" id="formFileMultiple2" name="meals_image" multiple>
                         </div>
                     </div>
 
@@ -277,7 +282,7 @@
                         <label for="floatingTextarea">餐點描述</label>
                     </div>
                     <div class="modal-footer mt-5">
-                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal">儲存</button>
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal">修改</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
                     </div>
                 </form>
@@ -292,6 +297,8 @@
         max-height: 200px;
     }
 </style>
+
+<!-- 圖片上傳功能 -->
 <script>
     // 獲取圖片上傳輸入元素
     const fileInput = document.getElementById('formFileMultiple');
@@ -318,6 +325,47 @@
         }
     });
 </script>
+
+<!-- 資料匯入"修改"功能 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const modifyButtons = document.querySelectorAll('.modify-button');
+
+    modifyButtons.forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            // 获取模态对话框表单元素
+            const form = document.querySelector('#staticBackdrop2 form');
+
+            // 获取按钮上的自定义属性
+            const mealsName = event.currentTarget.getAttribute('data-meals-name');
+            const mealsPrice = event.currentTarget.getAttribute('data-meals-price');
+            const mealsStatus = event.currentTarget.getAttribute('data-meals-status');
+            const mealsCategory = event.currentTarget.getAttribute('data-meals-category');
+            const mealsDescription = event.currentTarget.getAttribute('data-meals-description');
+            const mealsImage = event.currentTarget.getAttribute('data-meals-image');  // 新增获取图像的属性
+
+            // 将获取到的值设置到表单字段中
+            form.querySelector('#floatingItemName').value = mealsName;
+            form.querySelector('#floatingItemPrices').value = mealsPrice;
+
+            // 设置单选按钮
+            form.querySelector(`input[name="meals_status"][value="${mealsStatus}"]`).checked = true;
+
+            // 设置下拉菜单
+            form.querySelector('select[name="meals_category"]').value = mealsCategory;
+
+            // 设置文本域
+            form.querySelector('#floatingTextarea').value = mealsDescription;
+
+            // 设置图像
+            const imgElement = form.querySelector('#previewImage2');
+            imgElement.src = mealsImage;
+        });
+    });
+});
+
+</script>
+
 <!-- <script>
     var rowCounter = 1;
 

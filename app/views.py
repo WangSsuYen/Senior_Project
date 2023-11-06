@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpRequest, HttpResponse
 from django.db import connection
 from django.utils import timezone
@@ -118,18 +118,19 @@ class Client():
             return redirect('/clt/')
         else:
             if request.method == "GET":
+                succmesg = request.session.pop('succmesg' , None)#檢查是否有成功訊息(None為預設值)
+                errmesg = request.session.pop('errmesg' , None)#檢查是否有失敗訊息(None為預設值)
+
                 user = request.session.get('uniform_numbers')
                 cursor = connection.cursor()
                 cursor.execute(
                     "SELECT * FROM client_menu WHERE meals_owner = %s", (user, ))
-
                 # 獲取所有欄位名稱
                 column_names = [desc[0] for desc in cursor.description]
                 # 將查詢到的資料轉換為dict
                 user_menu = [dict(zip(column_names, row))
                              for row in cursor.fetchall()]
-                print(user_menu)
-                return render(request, 'client_menu.html', {'user_menu': user_menu, 'user_logout': user})
+                return render(request, 'client_menu.html', {'user_menu': user_menu, 'user_logout': user , 'succmesg': succmesg , 'errmesg': errmesg})
 
             return render(request, 'client_menu.html', {'user_logout': user})
 
@@ -164,10 +165,58 @@ class Client():
                 cursor.execute("INSERT INTO client_menu (meals_image, meals_name, meals_price, meals_category, meals_status, meals_description, meals_creattime, meals_owner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (
                     file_name, menu_name, menu_price, menu_category, menu_type, menu_description, creatime, user))
                 succmesg = "菜單新增成功"
+                request.session['succmesg'] = succmesg
                 return redirect('/clt/menu/')
             except Exception as err:
                 errmesg = err
-                return render(request, 'client_menu.html', {'errmesg': errmesg, 'user_logout': user})
+                request.session['errmesg'] = errmesg
+                return redirect('/clt/menu/')
+
+    def menu_update(request: HttpRequest):
+        if request.method == "POST":
+            user = request.session.get('uniform_numbers')
+            menu_name = request.POST.get('meals_name')
+            menu_price = request.POST.get('meals_price')
+            menu_type = request.POST.get('meals_status')
+            menu_category = request.POST.get('meals_category')
+            menu_description = request.POST.get('meals_description')
+            updatetime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
+            menu_image = request.FILES.get('meals_image')
+            # 處理文件上傳
+            # 若有資料上傳，則執行更新
+            if menu_image:
+                # 獲取檔案類型
+                file_extension = menu_image.name.split('.')[-1]
+                # 定義檔案名稱
+                file_name = f"{menu_name}.{file_extension}"
+                # 文件路徑
+                destination_path = os.path.join(
+                    settings.MEDIA_ROOT, f"menu/{user}/" + file_name)
+                # 文件上傳
+                DataSet.handle_uploaded_file(menu_image, destination_path)
+            # 若無資料上傳，則執行原檔案名稱
+            else:
+                cursor = connection.cursor()
+                cursor.execute(
+                    "SELECT meals_image FROM client_menu WHERE meals_owner = %s AND meals_name = %s", (user, menu_name))
+                original_menu = cursor.fetchone()
+                # 獲取原圖檔名稱
+                if original_menu:
+                    file_name = original_menu[0]
+                else:
+                    file_name = None
+
+            cursor = connection.cursor()
+            try:
+                cursor.execute("UPDATE client_menu SET meals_image = %s, meals_name = %s, meals_price = %s, meals_category = %s, meals_status = %s, meals_description = %s, meals_creattime = %s WHERE meals_owner = %s AND meals_name = %s", (
+                    file_name, menu_name, menu_price, menu_category, menu_type, menu_description, updatetime, user, menu_name))
+                succmesg = "菜單更新成功"
+                request.session['succmesg'] = succmesg
+                return redirect('/clt/menu/')
+            except Exception as err:
+                errmesg = err
+                request.session['errmesg'] = errmesg
+                return redirect('/clt/menu/')
 
     def signup(request: HttpRequest):
         errmesg = None
