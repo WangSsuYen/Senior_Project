@@ -31,6 +31,7 @@ urlpatterns = [
     path('clt/logout/', views.Client.logout),
     path('clt/menu/add/', views.Client.menu_add),
     path('clt/menu/update/', views.Client.menu_update),
+    path('clt/menu/addcategory/', views.Client.category_add),
 
 
 ]

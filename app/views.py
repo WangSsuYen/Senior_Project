@@ -118,19 +118,27 @@ class Client():
             return redirect('/clt/')
         else:
             if request.method == "GET":
-                succmesg = request.session.pop('succmesg' , None)#檢查是否有成功訊息(None為預設值)
-                errmesg = request.session.pop('errmesg' , None)#檢查是否有失敗訊息(None為預設值)
+                #檢查成功、失敗訊息(成功、失敗訊息會在頁面顯示一次後消失)
+                succmesg = request.session.pop('succmesg' , None)
+                errmesg = request.session.pop('errmesg' , None)
 
                 user = request.session.get('uniform_numbers')
                 cursor = connection.cursor()
-                cursor.execute(
-                    "SELECT * FROM client_menu WHERE meals_owner = %s", (user, ))
-                # 獲取所有欄位名稱
+                # 取得菜單資訊
+                cursor.execute("SELECT * FROM client_menu WHERE meals_owner = %s", (user, ))
                 column_names = [desc[0] for desc in cursor.description]
-                # 將查詢到的資料轉換為dict
-                user_menu = [dict(zip(column_names, row))
-                             for row in cursor.fetchall()]
-                return render(request, 'client_menu.html', {'user_menu': user_menu, 'user_logout': user , 'succmesg': succmesg , 'errmesg': errmesg})
+                user_menu = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+                print(user_menu)
+
+                #抓去餐點類別
+                cursor.execute("SELECT * FROM meals_category")
+                category_names = [desc[0] for desc in cursor.description]
+                category_list = [dict(zip(category_names, row)) for row in cursor.fetchall()]
+                print(category_list)
+
+                return render(request, 'client_menu.html',
+                {"category_list" : category_list ,'user_menu': user_menu, 'user_logout': user,
+                 'succmesg': succmesg , 'errmesg': errmesg})
 
             return render(request, 'client_menu.html', {'user_logout': user})
 
@@ -144,12 +152,22 @@ class Client():
             menu_description = request.POST.get('meals_description')
             creatime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
             menu_image = request.FILES.get('meals_image')
+
+            #找出最大的菜單編號
+            cursor = connection.cursor()
+            cursor.execute("SELECT MAX(meals_number) FROM client_menu")
+            max_number = cursor.fetchone()[0]
+            if max_number is None:
+                max_number = 0
+            else:
+                max_number = int(max_number)
+                print(max_number)
             # 處理文件上傳
             if menu_image:
                 # 獲取檔案類型
                 file_extension = menu_image.name.split('.')[-1]
                 # 定義檔案名稱
-                file_name = f"{menu_name}.{file_extension}"
+                file_name = f"{max_number + 1}.{file_extension}"
                 # 文件路徑
                 destination_path = os.path.join(
                     settings.MEDIA_ROOT, f"menu/{user}/" + file_name)
@@ -175,6 +193,7 @@ class Client():
     def menu_update(request: HttpRequest):
         if request.method == "POST":
             user = request.session.get('uniform_numbers')
+            menu_number = request.POST.get('meals_number')
             menu_name = request.POST.get('meals_name')
             menu_price = request.POST.get('meals_price')
             menu_type = request.POST.get('meals_status')
@@ -188,7 +207,7 @@ class Client():
                 # 獲取檔案類型
                 file_extension = menu_image.name.split('.')[-1]
                 # 定義檔案名稱
-                file_name = f"{menu_name}.{file_extension}"
+                file_name = f"{menu_number}.{file_extension}"
                 # 文件路徑
                 destination_path = os.path.join(
                     settings.MEDIA_ROOT, f"menu/{user}/" + file_name)
@@ -198,7 +217,7 @@ class Client():
             else:
                 cursor = connection.cursor()
                 cursor.execute(
-                    "SELECT meals_image FROM client_menu WHERE meals_owner = %s AND meals_name = %s", (user, menu_name))
+                    "SELECT meals_image FROM client_menu WHERE meals_owner = %s AND meals_number = %s", (user, menu_number))
                 original_menu = cursor.fetchone()
                 # 獲取原圖檔名稱
                 if original_menu:
@@ -208,8 +227,8 @@ class Client():
 
             cursor = connection.cursor()
             try:
-                cursor.execute("UPDATE client_menu SET meals_image = %s, meals_name = %s, meals_price = %s, meals_category = %s, meals_status = %s, meals_description = %s, meals_creattime = %s WHERE meals_owner = %s AND meals_name = %s", (
-                    file_name, menu_name, menu_price, menu_category, menu_type, menu_description, updatetime, user, menu_name))
+                cursor.execute("UPDATE client_menu SET meals_image = %s, meals_name = %s, meals_price = %s, meals_category = %s, meals_status = %s, meals_description = %s, meals_creattime = %s WHERE meals_owner = %s AND meals_number = %s", (
+                    file_name, menu_name, menu_price, menu_category, menu_type, menu_description, updatetime, user, menu_number))
                 succmesg = "菜單更新成功"
                 request.session['succmesg'] = succmesg
                 return redirect('/clt/menu/')
@@ -217,6 +236,25 @@ class Client():
                 errmesg = err
                 request.session['errmesg'] = errmesg
                 return redirect('/clt/menu/')
+
+    def category_add(request: HttpRequest):
+        if request.method == "POST":
+            user = request.session.get('uniform_numbers')
+            category_name = request.POST.get('category_name')
+
+            cursor = connection.cursor()
+            cursor.execute("SELECT MAX(category_number) FROM meals_category")
+            max_number = cursor.fetchone()[0]
+            if max_number is None:
+                category_number = 0
+            else:
+                category_number = int(max_number)
+            cursor.execute("INSERT INTO meals_category (category_number, category_name, category_creator) VALUES (%s, %s, %s)",
+            (category_number + 1, category_name, user))
+            succmesg = "類別新增成功"
+            request.session['succmesg'] = succmesg
+            return redirect('/clt/menu/')
+
 
     def signup(request: HttpRequest):
         errmesg = None

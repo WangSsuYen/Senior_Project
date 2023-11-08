@@ -6,16 +6,17 @@
     <div class="col-md-2">
         <div class="col-md-12 position-sticky shadow-lg p-3 mb-5 bg-body rounded" style="top: 250px;">
             <ul class="list-group">
-                <!-- for -->
+                {% for list in category_list %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
-                        <input class="form-check-input me-2" type="checkbox" value="">
-                        A apple
+                        <input class="form-check-input me-2" type="checkbox"
+                            id="category_number{{list.category_number}}" name="category_number{{list.category_number}}"
+                            value="{{list.category_number}}">
+                        {{list.category_name}}
                     </div>
-                    <span class="badge bg-primary rounded-pill">15</span>
+                    <span class="badge bg-primary rounded-pill">count</span>
                 </li>
-
-                <!-- endfor -->
+                {% endfor %}
             </ul>
             <div class="d-flex align-items-center justify-content-center mt-3">
                 <div class="row">
@@ -28,8 +29,7 @@
     </div>
 
     <div class="container-fluid mt-3 bg-light bg-opacity-50 shadow-lg p-3 mb-5 bg-body rounded col-md-10">
-        <form method="post" action="/clt/menu/">
-            {% csrf_token %}
+        <form>
             <div class="rounded shadow-lg p-3 mb-5 bg-body rounded table-responsive">
                 <table class="table">
                     <thead class=" table-dark">
@@ -51,7 +51,7 @@
                                     <input class="form-check-input" type="radio"
                                         name="meals_status_{{item.meals_number}}"
                                         id="meals_status_{{item.meals_number}}" value="1"
-                                        {% if item.meals_status == "1" %} checked {% endif %}>
+                                        {% if item.meals_status == "1" %} checked disabled {% endif %} disabled>
                                     <label class="form-check-label" for="meals_status_{{item.meals_number}}">上線</label>
                                 </div>
                                 <br>
@@ -59,11 +59,14 @@
                                     <input class="form-check-input" type="radio"
                                         name="meals_status_{{item.meals_number}}"
                                         id="meals_status_{{item.meals_number}}" value="0"
-                                        {% if item.meals_status == "0" %} checked {% endif %}>
+                                        {% if item.meals_status == "0" %} checked disabled {% endif %} disabled>
                                     <label class="form-check-label" for="meals_status_{{item.meals_number}}">下線</label>
                                 </div>
                             </td>
                             <td>
+                                <!-- 隱藏值 -->
+                                <input type="hidden" id="meals_status_{{item.meals_number}}"
+                                    name="meals_status_{{item.meals_number}}" value="{{item.meals_number}}">
                                 <input type="text" class="form-control" id="meals_status" name="meals_status"
                                     value='{{item.meals_category}}' readonly>
                             </td>
@@ -91,7 +94,7 @@
                                 <div class="justify-content-center d-flex">
                                     <a href="#" class="btn btn-outline-secondary mt-3 modify-button"
                                         data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
-                                        data-meals-name="{{item.meals_name}}"
+                                        data-meals-number="{{item.meals_number}}" data-meals-name="{{item.meals_name}}"
                                         data-meals-price="{{item.meals_price}}"
                                         data-meals-status="{{item.meals_status}}"
                                         data-meals-category="{{item.meals_category}}"
@@ -112,16 +115,29 @@
                     </tbody>
                     {% endfor %}
                 </table>
-                <div class="justify-content-center d-flex align-items-center">
-                    <button type="button" class="btn btn-outline-secondary mt-3 " data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop">
-                        <img style=" width: 24px; height: 24px;" src="{% static 'add.png' %}" title="新增">新增餐點
-                    </button>
+                <div class="row">
+                    <div class="col justify-content-center d-flex align-items-center">
+                        <button type="button" class="btn btn-outline-secondary mt-3 " data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            <img style=" width: 24px; height: 24px;" src="{% static 'add.png' %}" title="新增">新增餐點
+                        </button>
+                    </div>
+                    <div class="col justify-content-center d-flex align-items-center">
+                        <button type="button" class="btn btn-outline-secondary mt-3 " data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop3">
+                            <img style=" width: 24px; height: 24px;" src="{% static 'add.png' %}" title="新增">新增餐點類別
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="justify-content-end d-flex">
                 <button type="submit" class="btn btn-outline-danger mt-3 ">
-                    <img style=" width: 24px; height: 24px;" src="{% static 'update_icon.png' %}" title="更新">更新
+                    <img style=" width: 24px; height: 24px;" src="{% static 'update_icon.png' %}" title="更新">一鍵上線
+                </button>
+            </div>
+            <div class="justify-content-end d-flex">
+                <button type="submit" class="btn btn-outline-danger mt-3 ">
+                    <img style=" width: 24px; height: 24px;" src="{% static 'update_icon.png' %}" title="更新">一鍵下線
                 </button>
             </div>
         </form>
@@ -183,16 +199,9 @@
                     <div class="mb-3">
                         <select class="form-select" aria-label="Default select example" name="meals_category">
                             <option selected>請選擇餐點類型</option>
-                            <option value="1">主食</option>
-                            <option value="2">炒類</option>
-                            <option value="3">炸物</option>
-                            <option value="4">燒烤</option>
-                            <option value="5">清蒸</option>
-                            <option value="6">火鍋</option>
-                            <option value="7">甜點</option>
-                            <option value="8">飲料</option>
-                            <option value="9">套餐</option>
-                            <option value="10">其他</option>
+                            {% for list in category_list %}
+                            <option value="{{list.category_number}}">{{list.category_name}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="form-floating mb-3">
@@ -211,13 +220,13 @@
 </div>
 
 
-<!-- updateitem.Modal未完成 -->
+<!-- updateitem.Modal -->
 <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel2" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title " id="staticBackdropLabel">餐點新增</h5>
+                <h5 class="modal-title " id="staticBackdropLabe2">餐點新增</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -226,14 +235,16 @@
                     <div class="mt-2 justify-content-center align-items-center d-flex">
                         <figure class="figure">
                             <figcaption class="figure-caption justify-content-center d-flex">餐點圖像</figcaption>
-                            <img id="previewImage2" src="" class="figure-img img-fluid rounded"
-                                style="height: 80;width: 80;" >
+                            <img id="update_previewImage" src="" class="figure-img img-fluid rounded"
+                                style="height: 80;width: 80;">
                         </figure>
                     </div>
                     <div class="mt-3 d-flex align-items-center justify-content-center">
                         <div class="mb-3">
-                            <label for="formFileMultiple2" class="form-label justify-content-center d-flex">選擇圖片</label>
-                            <input class="form-control" type="file" id="formFileMultiple2" name="meals_image" multiple>
+                            <label for="update_formFileMultiple"
+                                class="form-label justify-content-center d-flex">選擇圖片</label>
+                            <input class="form-control" type="file" id="update_formFileMultiple" name="meals_image"
+                                multiple>
                         </div>
                     </div>
 
@@ -252,6 +263,7 @@
                         </label>
                     </div>
                     <div class="form-floating mb-3 mt-3">
+                        <input type="hidden" id="meals_number" name="meals_number">
                         <input type="text" class="form-control" id="floatingItemName" placeholder="餐點名稱"
                             name="meals_name">
                         <label for="floatingItemName">餐點名稱</label>
@@ -264,16 +276,9 @@
                     <div class="mb-3">
                         <select class="form-select" aria-label="Default select example" name="meals_category">
                             <option selected>請選擇餐點類型</option>
-                            <option value="1">主食</option>
-                            <option value="2">炒類</option>
-                            <option value="3">炸物</option>
-                            <option value="4">燒烤</option>
-                            <option value="5">清蒸</option>
-                            <option value="6">火鍋</option>
-                            <option value="7">甜點</option>
-                            <option value="8">飲料</option>
-                            <option value="9">套餐</option>
-                            <option value="10">其他</option>
+                            {% for list in category_list %}
+                            <option value="{{list.category_number}}">{{list.category_name}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="form-floating mb-3">
@@ -291,6 +296,52 @@
     </div>
 </div>
 
+
+<!-- addcategory.Modal -->
+<div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title " id="staticBackdropLabel">餐點新增</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="bg-light bg-opacity-50 shadow-lg p-3 mb-5 bg-body rounded">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">編號</th>
+                                <th scope="col">名稱</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for list in category_list %}
+                            <tr>
+                                <td>{{list.category_number}}</td>
+                                <td>{{list.category_name}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <form method="post" action="/clt/menu/addcategory/">
+                    {% csrf_token %}
+                    <div class="form-floating mb-3 mt-3">
+                        <input type="text" class="form-control" placeholder="餐點類別名稱" name="category_name">
+                        <label for="floatingItemName">新稱餐點名稱</label>
+                    </div>
+                    <div class="modal-footer mt-5">
+                        <button type="submit" class="btn btn-success" data-bs-dismiss="modal">儲存</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <style>
     #meals_previews {
         max-width: 200px;
@@ -298,7 +349,7 @@
     }
 </style>
 
-<!-- 圖片上傳功能 -->
+<!-- (新增功能)圖片上傳功能 -->
 <script>
     // 獲取圖片上傳輸入元素
     const fileInput = document.getElementById('formFileMultiple');
@@ -326,43 +377,75 @@
     });
 </script>
 
+<!-- (修改功能)圖片上傳功能 -->
+<script>
+    // 獲取圖片上傳輸入元素
+    const update_fileInput = document.getElementById('update_formFileMultiple');
+
+    // 獲取圖片預覽元素
+    const update_previewImage = document.getElementById('update_previewImage');
+
+    // 監聽文件選擇事件
+    update_fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+
+        if (file) {
+            // 創建 FileReader 物件
+            const reader = new FileReader();
+
+            // 監聽 FileReader 加載完成事件
+            reader.onload = function (e) {
+                // 將圖片預覽的 SRC 設置為所選文件的內容
+                update_previewImage.src = e.target.result;
+            };
+
+            // 讀取文件內容
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
 <!-- 資料匯入"修改"功能 -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const modifyButtons = document.querySelectorAll('.modify-button');
+        const modifyButtons = document.querySelectorAll('.modify-button');
 
-    modifyButtons.forEach(function (button) {
-        button.addEventListener('click', function (event) {
-            // 获取模态对话框表单元素
-            const form = document.querySelector('#staticBackdrop2 form');
+        modifyButtons.forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                // 获取模态对话框表单元素
+                const form = document.querySelector('#staticBackdrop2 form');
 
-            // 获取按钮上的自定义属性
-            const mealsName = event.currentTarget.getAttribute('data-meals-name');
-            const mealsPrice = event.currentTarget.getAttribute('data-meals-price');
-            const mealsStatus = event.currentTarget.getAttribute('data-meals-status');
-            const mealsCategory = event.currentTarget.getAttribute('data-meals-category');
-            const mealsDescription = event.currentTarget.getAttribute('data-meals-description');
-            const mealsImage = event.currentTarget.getAttribute('data-meals-image');  // 新增获取图像的属性
+                // 获取按钮上的自定义属性
+                const mealsName = event.currentTarget.getAttribute('data-meals-name');
+                const mealsPrice = event.currentTarget.getAttribute('data-meals-price');
+                const mealsStatus = event.currentTarget.getAttribute('data-meals-status');
+                const mealsCategory = event.currentTarget.getAttribute('data-meals-category');
+                const mealsDescription = event.currentTarget.getAttribute('data-meals-description');
+                const mealsNumber = event.currentTarget.getAttribute('data-meals-number');
+                const mealsImage = event.currentTarget.getAttribute('data-meals-image');  // 新增获取图像的属性
 
-            // 将获取到的值设置到表单字段中
-            form.querySelector('#floatingItemName').value = mealsName;
-            form.querySelector('#floatingItemPrices').value = mealsPrice;
+                // 将获取到的值设置到表单字段中
+                form.querySelector('#floatingItemName').value = mealsName;
+                form.querySelector('#floatingItemPrices').value = mealsPrice;
 
-            // 设置单选按钮
-            form.querySelector(`input[name="meals_status"][value="${mealsStatus}"]`).checked = true;
+                // 设置单选按钮
+                form.querySelector(`input[name="meals_status"][value="${mealsStatus}"]`).checked = true;
 
-            // 设置下拉菜单
-            form.querySelector('select[name="meals_category"]').value = mealsCategory;
+                // 设置下拉菜单
+                form.querySelector('select[name="meals_category"]').value = mealsCategory;
 
-            // 设置文本域
-            form.querySelector('#floatingTextarea').value = mealsDescription;
+                // 设置文本域
+                form.querySelector('#floatingTextarea').value = mealsDescription;
 
-            // 设置图像
-            const imgElement = form.querySelector('#previewImage2');
-            imgElement.src = mealsImage;
+                // 设置隐藏域
+                form.querySelector('input[name="meals_number"]').value = mealsNumber;
+
+                // 设置图像
+                const imgElement = form.querySelector('#update_previewImage');
+                imgElement.src = mealsImage;
+            });
         });
     });
-});
 
 </script>
 

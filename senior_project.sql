@@ -36,12 +36,26 @@ CREATE TABLE
         meals_price INT NOT NULL COMMENT '餐點價格',
         meals_description VARCHAR(50) NOT NULL COMMENT '餐點描述',
         meals_status VARCHAR(2) NOT NULL COMMENT '餐點狀態',
-        meals_category VARCHAR(3) NOT NULL COMMENT '餐點類別',
+        meals_category INT NOT NULL COMMENT '餐點類別',
         meals_owner VARCHAR(15) NOT NULL COMMENT '餐點歸屬餐廳',
         meals_creattime datetime NOT NULL COMMENT '創建時間',
         PRIMARY KEY (meals_number),
-        FOREIGN KEY (meals_owner) REFERENCES client(uniform_numbers)
+        FOREIGN KEY (meals_owner) REFERENCES client(uniform_numbers),
+        FOREIGN KEY (meals_category) REFERENCES meals_category(category_number)
     ) COMMENT '餐點資訊';
+
+
+CREATE TABLE meals_category (
+    category_number INT NOT NULL COMMENT '餐點類別編號',
+    category_name VARCHAR(10) NOT NULL COMMENT '餐點類別名稱',
+    category_creator VARCHAR(10) NOT NULL COMMENT '創建者',
+    PRIMARY KEY (category_number),
+    FOREIGN KEY (category_creator) REFERENCES client(uniform_numbers)
+) COMMENT '餐點類別';
+
+
 
 ALTER TABLE
     client_menu CHANGE meals_number meals_number INT NOT NULL AUTO_INCREMENT COMMENT '餐點編號';
+ALTER TABLE
+    client_menu CHANGE meals_category meals_category INT NOT NULL COMMENT '餐點類別';
