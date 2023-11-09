@@ -2,131 +2,146 @@
 {% load static %}
 (% load ifequal %}
 {% block content %}
-<!-- 卡片式餐點管理介面 -->
+<!-- 表格式菜單管理介面 -->
 <div class="container-fluid row">
     <div class="col-md-2">
         <div class="col-md-12 position-sticky shadow-lg p-3 mb-5 bg-body rounded" style="top: 250px;">
-            <div class="list-group">
+            <ul class="list-group">
                 {% for list in count_list %}
-                <a class="list-group-item list-group-item-action text-dark d-flex justify-content-between align-items-start"
-                    id="category_number{{list.meals_category}}" name="category_number{{list.meals_category}}"
-                    value="{{list.meals_category}} "href="/">
-                    {{list.category_name}}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <input class="form-check-input me-2" type="checkbox"
+                            id="category_number{{list.category_number}}" name="category_number{{list.category_number}}"
+                            value="{{list.category_number}}">
+                        {{list.category_name}}
+                    </div>
                     <span class="badge bg-primary rounded-pill">{{list.total}}</span>
-                </a>
+                </li>
                 {% endfor %}
+            </ul>
+            <div class="d-flex align-items-center justify-content-center mt-3">
+                <div class="row">
+                    <a class="btn btn-dark col" href="/">
+                        <img class="col" style="width: 48px;" src="/static/search_icon.png" title="搜尋">搜尋
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="container-fluid mt-3 bg-light bg-opacity-50 shadow-lg p-3 mb-5 bg-body rounded col-md-10">
-        <div class="rounded shadow-lg p-3 mb-3 bg-body">
-            <div class="mb-3 row d-flex justify-content-center">
-                {% for item in user_menu %}
-                    <div class="card mb-3 mx-3" style="width: 15rem;">
-                        <div class="mb-3 mt-3">
-                            <div class="mx-2">
-                            <!-- 隱藏值 -->
-                            <input type="hidden" id="meals_status_{{item.meals_number}}"
-                                name="meals_status_{{item.meals_number}}" value="{{item.meals_number}}">
-                                <div class="input-group border border-info rounded">
-                                    <input type="text" class="form-control text-center" id="meals_status"
-                                    name="meals_status" value='{{item.category_name}}' readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3 justify-content-center d-flex">
-                            <img src="{%static 'media/menu/'%}{{item.meals_owner}}/{{item.meals_image}}"
-                                class="img-thumbnail" name="meals_previews" style="height: 120px;width: 120px;">
-                        </div>
-                        <div class="card-body">
-                            <div class="row mb-2">
-                                <div class="col form-check justify-content-center d-flex">
-                                    <input class="form-check-input" type="radio" name="meals_status_{{item.meals_number}}"
+        <form>
+            <div class="rounded shadow-lg p-3 mb-5 bg-body rounded table-responsive">
+                <table class="table">
+                    <thead class=" table-dark">
+                        <tr>
+                            <th class="col-md-1" scope="col">狀態</th>
+                            <th class="col-md-1" scope="col">類別</th>
+                            <th class="col-md-2" scope="col">照片</th>
+                            <th class="col-md-2" scope="col">名稱</th>
+                            <th class="col-md-2" scope="col">價錢</th>
+                            <th class="col-md-2" scope="col">描述</th>
+                            <th class="col-md-2" scope="col">操作</th>
+                        </tr>
+                    </thead>
+                    {% for item in user_menu %}
+                    <tbody>
+                        <tr class="align-middle">
+                            <td>
+                                <div class="form-check justify-content-center d-flex">
+                                    <input class="form-check-input" type="radio"
+                                        name="meals_status_{{item.meals_number}}"
                                         id="meals_status_{{item.meals_number}}" value="1"
                                         {% if item.meals_status == "1" %} checked disabled {% endif %} disabled>
                                     <label class="form-check-label" for="meals_status_{{item.meals_number}}">上線</label>
                                 </div>
                                 <br>
-                                <div class="col form-check justify-content-center d-flex">
-                                    <input class="form-check-input" type="radio" name="meals_status_{{item.meals_number}}"
+                                <div class="form-check justify-content-center d-flex">
+                                    <input class="form-check-input" type="radio"
+                                        name="meals_status_{{item.meals_number}}"
                                         id="meals_status_{{item.meals_number}}" value="0"
                                         {% if item.meals_status == "0" %} checked disabled {% endif %} disabled>
                                     <label class="form-check-label" for="meals_status_{{item.meals_number}}">下線</label>
                                 </div>
-                            </div>
-                            <div class="mb-3">
+                            </td>
+                            <td>
+                                <!-- 隱藏值 -->
+                                <input type="hidden" id="meals_status_{{item.meals_number}}"
+                                    name="meals_status_{{item.meals_number}}" value="{{item.meals_number}}">
+                                <input type="text" class="form-control" id="meals_status" name="meals_status"
+                                    value='{{item.category_name}}' readonly>
+                            </td>
+                            <td>
+                                <img src="{%static 'media/menu/'%}{{item.meals_owner}}/{{item.meals_image}}"
+                                    class="img-thumbnail" name="meals_previews" style="height: 120px;width: 120px;">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="meals_name" name="meals_name"
+                                    value='{{item.meals_name}}' readonly>
+                            </td>
+                            <td>
                                 <div class="input-group">
-                                    <span class="input-group-text">名稱</span>
-                                    <input type="text" class="form-control" id="meals_name" name="meals_name"
-                                        value='{{item.meals_name}}' readonly>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">價格</span>
+                                    <span class="input-group-text">$</span>
                                     <input type="text" class="form-control" id="meals_prices" name="meals_prices"
-                                        value='{{item.meals_price}}' aria-label="Amount (to the nearest dollar)" readonly>
+                                        value='{{item.meals_price}}' aria-label="Amount (to the nearest dollar)"
+                                        readonly>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <div class="input-group">
-                                    <span class="input-group-text">描述</span>
-                                    <textarea class="form-control" name="meals_meals_description"
-                                        readonly>{{item.meals_description}}</textarea>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class=" col justify-content-center d-flex">
-                                    <a href="#"
-                                    class="btn btn-outline-success mt-3 modify-button border border-success"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdrop2" data-meals-number="{{item.meals_number}}"
-                                        data-meals-name="{{item.meals_name}}" data-meals-price="{{item.meals_price}}"
-                                        data-meals-status="{{item.meals_status}}" data-meals-category="{{item.meals_category}}"
+                            </td>
+                            <td>
+                                <textarea class="form-control" name="meals_meals_description"
+                                    readonly>{{item.meals_description}}</textarea>
+                            </td>
+                            <td>
+                                <div class="justify-content-center d-flex">
+                                    <a href="#" class="btn btn-outline-secondary mt-3 modify-button"
+                                        data-bs-toggle="modal" data-bs-target="#staticBackdrop2"
+                                        data-meals-number="{{item.meals_number}}" data-meals-name="{{item.meals_name}}"
+                                        data-meals-price="{{item.meals_price}}"
+                                        data-meals-status="{{item.meals_status}}"
+                                        data-meals-category="{{item.meals_category}}"
                                         data-meals-description="{{item.meals_description}}"
                                         data-meals-image="{%static 'media/menu/'%}{{item.meals_owner}}/{{item.meals_image}}">
                                         <img style="width:16px " src="{% static 'modify_icon.png' %}" title="修改">修改
                                     </a>
                                 </div>
                                 <br>
-                                <div class="col justify-content-center d-flex">
-                                    <a href="/stud/?a=d&q={{item.meals_name}}"
-                                    class="btn btn-outline-danger mt-3 modify-button border border-danger">
-                                        <img style="width:16px " src="{% static 'remove_icon.png' %}" title="刪除">刪除
+                                <div class="justify-content-center d-flex">
+                                    <a href="/stud/?a=d&q={{item.meals_name}}">
+                                        <button type="button" class="btn btn-outline-secondary mt-3">
+                                            <img style="width:16px " src="{% static 'remove_icon.png' %}" title="刪除">刪除
                                     </a>
                                 </div>
-                            </div>
-                        </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    {% endfor %}
+                </table>
+                <div class="row">
+                    <div class="col justify-content-center d-flex align-items-center">
+                        <button type="button" class="btn btn-outline-secondary mt-3 " data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            <img style=" width: 24px; height: 24px;" src="{% static 'add.png' %}" title="新增">新增餐點
+                        </button>
                     </div>
-                {% endfor %}
+                    <div class="col justify-content-center d-flex align-items-center">
+                        <button type="button" class="btn btn-outline-secondary mt-3 " data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop3">
+                            <img style=" width: 24px; height: 24px;" src="{% static 'add.png' %}" title="新增">新增餐點類別
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col justify-content-center d-flex align-items-center">
-                <button type="button" class="btn btn-outline-secondary mt-3 " data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop">
-                    <img style=" width: 24px; height: 24px;" src="{% static 'add.png' %}" title="新增">新增餐點
-                </button>
-            </div>
-            <div class="col justify-content-center d-flex align-items-center">
-                <button type="button" class="btn btn-outline-secondary mt-3 " data-bs-toggle="modal"
-                    data-bs-target="#staticBackdrop3">
-                    <img style=" width: 24px; height: 24px;" src="{% static 'add.png' %}" title="新增">新增餐點類別
-                </button>
-            </div>
-
-            <div class="col justify-content-end d-flex">
-                <button type="submit" class="btn btn-outline-info mt-3 ">
+            <div class="justify-content-end d-flex">
+                <button type="submit" class="btn btn-outline-danger mt-3 ">
                     <img style=" width: 24px; height: 24px;" src="{% static 'update_icon.png' %}" title="更新">一鍵上線
                 </button>
             </div>
-            <div class="col justify-content-end d-flex">
-                <button type="submit" class="btn btn-outline-primary mt-3 ">
+            <div class="justify-content-end d-flex">
+                <button type="submit" class="btn btn-outline-danger mt-3 ">
                     <img style=" width: 24px; height: 24px;" src="{% static 'update_icon.png' %}" title="更新">一鍵下線
                 </button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
