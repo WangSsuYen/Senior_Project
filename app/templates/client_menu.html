@@ -6,7 +6,7 @@
     <div class="col-md-2">
         <div class="col-md-12 position-sticky shadow-lg p-3 mb-5 bg-body rounded" style="top: 250px;">
             <ul class="list-group">
-                {% for list in category_list %}
+                {% for list in count_list %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <input class="form-check-input me-2" type="checkbox"
@@ -14,7 +14,7 @@
                             value="{{list.category_number}}">
                         {{list.category_name}}
                     </div>
-                    <span class="badge bg-primary rounded-pill">count</span>
+                    <span class="badge bg-primary rounded-pill">{{list.total}}</span>
                 </li>
                 {% endfor %}
             </ul>
@@ -68,7 +68,7 @@
                                 <input type="hidden" id="meals_status_{{item.meals_number}}"
                                     name="meals_status_{{item.meals_number}}" value="{{item.meals_number}}">
                                 <input type="text" class="form-control" id="meals_status" name="meals_status"
-                                    value='{{item.meals_category}}' readonly>
+                                    value='{{item.category_name}}' readonly>
                             </td>
                             <td>
                                 <img src="{%static 'media/menu/'%}{{item.meals_owner}}/{{item.meals_image}}"
