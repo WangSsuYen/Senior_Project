@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.db import connection
 from django.utils import timezone
 from .unit import DataSet
-from django.core.files.storage import default_storage
+from django.template.loader import render_to_string
 from django.core.files.base import ContentFile
 import os
 from django.conf import settings
@@ -122,31 +122,40 @@ class Client():
                 succmesg = request.session.pop('succmesg' , None)
                 errmesg = request.session.pop('errmesg' , None)
 
+                # 抓取網址回傳的類別編號
+                category_number = request.GET.get('cn')
                 user = request.session.get('uniform_numbers')
+
+                #將SQL語言參數化(有參數與無參數)
+                noparameter_query = '''SELECT client_menu.* , meals_category.category_name FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number WHERE meals_owner = %s'''
+                parameter_query = '''SELECT client_menu.* , meals_category.category_name FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number
+                                    WHERE client_menu.meals_owner = %s AND client_menu.meals_category = %s'''
+
                 cursor = connection.cursor()
                 # 取得菜單資訊,並與菜單類別進行分類
-                cursor.execute("SELECT client_menu.* , meals_category.category_name FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number WHERE meals_owner = %s", (user, ))
+                if category_number is None:
+                    cursor.execute(noparameter_query, (user,))
+                else:
+                    cursor.execute(parameter_query, (user, category_number,))
                 column_names = [desc[0] for desc in cursor.description]
                 user_menu = [dict(zip(column_names, row)) for row in cursor.fetchall()]
-                print(user_menu)
+
 
                 #抓去餐點類別，並統計類別數量
                 cursor.execute("SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category  ON client_menu.meals_category = meals_category.category_number WHERE meals_owner = %s GROUP BY meals_category.category_name, client_menu.meals_category ORDER BY client_menu.meals_category  ;" , (user, ))
                 count_names = [desc[0] for desc in cursor.description]
                 count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
-                print(count_list)
+
 
                 #抓取餐點類別
                 cursor.execute("SELECT * FROM meals_category")
                 category_names = [desc[0] for desc in cursor.description]
                 category_list = [dict(zip(category_names, row)) for row in cursor.fetchall()]
-                print(category_list)
+
 
                 return render(request, 'client_menu.html',
-                {"category_list" : category_list ,'count_list' : count_list ,'user_menu': user_menu,
-                 'user_logout': user, 'succmesg': succmesg , 'errmesg': errmesg})
+                {"category_list" : category_list, 'count_list' : count_list, 'user_menu': user_menu, 'user_logout': user, 'succmesg': succmesg , 'errmesg': errmesg})
 
-            return render(request, 'client_menu.html', {'user_logout': user})
 
     def menu_add(request: HttpRequest):
         if request.method == "POST":
@@ -242,6 +251,9 @@ class Client():
                 errmesg = err
                 request.session['errmesg'] = errmesg
                 return redirect('/clt/menu/')
+
+    def menu_delete(request: HttpRequest):
+        pass
 
     def category_add(request: HttpRequest):
         if request.method == "POST":

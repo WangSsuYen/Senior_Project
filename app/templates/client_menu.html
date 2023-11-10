@@ -7,10 +7,16 @@
     <div class="col-md-2">
         <div class="col-md-12 position-sticky shadow-lg p-3 mb-5 bg-body rounded" style="top: 250px;">
             <div class="list-group">
+                <a class="list-group-item list-group-item-action text-dark d-flex justify-content-between align-items-start"
+                    href="/clt/menu/">
+                    全部餐點
+                </a>
                 {% for list in count_list %}
                 <a class="list-group-item list-group-item-action text-dark d-flex justify-content-between align-items-start"
-                    id="category_number{{list.meals_category}}" name="category_number{{list.meals_category}}"
-                    value="{{list.meals_category}} "href="/">
+                    id="category_number{{list.meals_category}}"
+                    name="category_number{{list.meals_category}}"
+                    value="{{list.meals_category}}"
+                    href="/clt/menu/?cn={{ list.meals_category}}">
                     {{list.category_name}}
                     <span class="badge bg-primary rounded-pill">{{list.total}}</span>
                 </a>
@@ -91,8 +97,12 @@
                                 </div>
                                 <br>
                                 <div class="col justify-content-center d-flex">
-                                    <a href="/stud/?a=d&q={{item.meals_name}}"
-                                    class="btn btn-outline-danger mt-3 modify-button border border-danger">
+                                    <a href="#"
+                                    class="btn btn-outline-danger mt-3 border border-danger delete-button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#delectitemModal"
+                                    data-meals-name="{{item.meals_name}}"
+                                    data-meals-number="{{item.meals_number}}">
                                         <img style="width:16px " src="{% static 'remove_icon.png' %}" title="刪除">刪除
                                     </a>
                                 </div>
@@ -268,13 +278,37 @@
                         </select>
                     </div>
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" placeholder="粉好吃..." id="floatingTextarea"
+                        <textarea class="form-control" placeholder="" id="floatingTextarea"
                             name="meals_description"></textarea>
                         <label for="floatingTextarea">餐點描述</label>
                     </div>
                     <div class="modal-footer mt-5">
                         <button type="submit" class="btn btn-success" data-bs-dismiss="modal">修改</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Deleteitem.Modal -->
+<div class="modal fade" id="delectitemModal" tabindex="-1" aria-labelledby="delectitemModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delectitemModalLabel">想清楚唷</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/clt/menu/delect/">
+                    {% csrf_token %}
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-outline-danger">刪除</button>
                     </div>
                 </form>
             </div>
@@ -391,6 +425,7 @@
     });
 </script>
 
+
 <!-- 資料匯入"修改"功能 -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -434,6 +469,39 @@
     });
 
 </script>
+
+<!-- 資料匯入"刪除"功能 -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var delectitemModal = new bootstrap.Modal(document.getElementById('delectitemModal'));
+
+        const deleteButtons = document.querySelectorAll('.delete-button');
+
+        deleteButtons.forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                // 获取按钮上的自定义属性
+                const mealsName = event.currentTarget.getAttribute('data-meals-name');
+                const mealsNumber = event.currentTarget.getAttribute('data-meals-number');
+
+                // 将获取到的值设置到模态对话框中
+                var modalBody = document.querySelector('#delectitemModal .modal-body');
+                modalBody.textContent = '確定要刪除 ' + mealsName + ' 嗎？';
+
+                // 设置 "删除" 按钮的点击事件
+                var deleteButton = document.querySelector('#delectitemModal .btn-outline-danger');
+                deleteButton.addEventListener('click', function () {
+                    console.log('执行删除操作，mealName:', mealsName, 'mealNumber:', mealsNumber);
+                    delectitemModal.hide();
+                });
+
+                // 显示模态对话框
+                delectitemModal.show();
+            });
+        });
+    });
+</script>
+
+
 
 <!-- <script>
     var rowCounter = 1;
