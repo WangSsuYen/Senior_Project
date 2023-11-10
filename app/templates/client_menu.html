@@ -302,9 +302,15 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post" action="/clt/menu/delect/">
+                <form method="post" action="/clt/menu/delete/">
                     {% csrf_token %}
-
+                    <input type="hidden" name="meals_number">
+                    <div class="input-group input-group-lg mb-5 mt-5 border border-danger rounded shadow-lg">
+                        <span class="input-group-text" id="inputGroup-sizing-lg">確定要把</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input"
+                                aria-describedby="inputGroup-sizing-lg" name="meals_name" readonly>
+                        <span class="input-group-text" id="inputGroup-sizing-lg">刪除嗎?</span>
+                    </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
@@ -362,10 +368,11 @@
 </div>
 
 
+<!-- 圖片大小 -->
 <style>
     #meals_previews {
-        max-width: 200px;
-        max-height: 200px;
+        max-width: 300px;
+        max-height: 300px;
     }
 </style>
 
@@ -485,14 +492,8 @@
 
                 // 将获取到的值设置到模态对话框中
                 var modalBody = document.querySelector('#delectitemModal .modal-body');
-                modalBody.textContent = '確定要刪除 ' + mealsName + ' 嗎？';
-
-                // 设置 "删除" 按钮的点击事件
-                var deleteButton = document.querySelector('#delectitemModal .btn-outline-danger');
-                deleteButton.addEventListener('click', function () {
-                    console.log('执行删除操作，mealName:', mealsName, 'mealNumber:', mealsNumber);
-                    delectitemModal.hide();
-                });
+                modalBody.querySelector('input[name="meals_name"]').value = mealsName;
+                modalBody.querySelector('input[name="meals_number"]').value = mealsNumber;
 
                 // 显示模态对话框
                 delectitemModal.show();
@@ -500,6 +501,8 @@
         });
     });
 </script>
+
+
 
 
 

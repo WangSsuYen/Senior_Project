@@ -32,6 +32,7 @@ urlpatterns = [
     path('clt/menu/add/', views.Client.menu_add),
     path('clt/menu/update/', views.Client.menu_update),
     path('clt/menu/addcategory/', views.Client.category_add),
+    path('clt/menu/delete/' , views.Client.menu_delete),
 
 
 ]

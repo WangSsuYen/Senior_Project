@@ -197,7 +197,7 @@ class Client():
             try:
                 cursor.execute("INSERT INTO client_menu (meals_image, meals_name, meals_price, meals_category, meals_status, meals_description, meals_creattime, meals_owner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (
                     file_name, menu_name, menu_price, menu_category, menu_type, menu_description, creatime, user))
-                succmesg = "菜單新增成功"
+                succmesg = f"{menu_name}新增成功"
                 request.session['succmesg'] = succmesg
                 return redirect('/clt/menu/')
             except Exception as err:
@@ -244,7 +244,7 @@ class Client():
             try:
                 cursor.execute("UPDATE client_menu SET meals_image = %s, meals_name = %s, meals_price = %s, meals_category = %s, meals_status = %s, meals_description = %s, meals_creattime = %s WHERE meals_owner = %s AND meals_number = %s", (
                     file_name, menu_name, menu_price, menu_category, menu_type, menu_description, updatetime, user, menu_number))
-                succmesg = "菜單更新成功"
+                succmesg = f"{menu_name}已更新"
                 request.session['succmesg'] = succmesg
                 return redirect('/clt/menu/')
             except Exception as err:
@@ -253,7 +253,22 @@ class Client():
                 return redirect('/clt/menu/')
 
     def menu_delete(request: HttpRequest):
-        pass
+        if request.method == "POST":
+            user = request.session.get('uniform_numbers')
+            menu_number = request.POST.get('meals_number')
+            menu_name = request.POST.get('meals_name')
+            cursor = connection.cursor()
+            try:
+                cursor.execute(
+                    "DELETE FROM client_menu WHERE meals_owner = %s AND meals_number = %s AND meals_name = %s",
+                    (user, menu_number, menu_name,))
+                succmesg = f"{menu_name}已被刪除"
+                request.session['succmesg'] = succmesg
+                return redirect('/clt/menu/')
+            except Exception as err:
+                errmesg = err
+                request.session['errmesg'] = errmesg
+                return redirect('/clt/menu/')
 
     def category_add(request: HttpRequest):
         if request.method == "POST":
