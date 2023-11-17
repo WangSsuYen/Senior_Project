@@ -139,6 +139,7 @@ class Client():
                     cursor.execute(parameter_query, (user, category_number,))
                 column_names = [desc[0] for desc in cursor.description]
                 user_menu = [dict(zip(column_names, row)) for row in cursor.fetchall()]
+                print(user_menu)
 
 
                 #抓去餐點類別，並統計類別數量
@@ -165,6 +166,8 @@ class Client():
             menu_type = request.POST.get('meals_status')
             menu_category = request.POST.get('meals_category')
             menu_description = request.POST.get('meals_description')
+            menu_discount = request.POST.get('meals_discount')
+            menu_discount_values = request.POST.get('meals_discount_values')
             creatime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
             menu_image = request.FILES.get('meals_image')
 
@@ -190,13 +193,15 @@ class Client():
                 DataSet.handle_uploaded_file(menu_image, destination_path)
             else:
                 file_name = None
-            print(menu_name, menu_price, menu_type, menu_category,
-                  menu_description, creatime, file_name)
+
+            if menu_discount_values == "":
+                menu_discount_values = None
+
 
             cursor = connection.cursor()
             try:
-                cursor.execute("INSERT INTO client_menu (meals_image, meals_name, meals_price, meals_category, meals_status, meals_description, meals_creattime, meals_owner) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (
-                    file_name, menu_name, menu_price, menu_category, menu_type, menu_description, creatime, user))
+                cursor.execute("INSERT INTO client_menu (meals_image, meals_name, meals_price, meals_category, meals_status, meals_description, meals_creattime, meals_owner , meals_discount , meals_discount_values) VALUES (%s, %s, %s, %s, %s, %s, %s, %s , %s , %s )", (file_name, menu_name, menu_price, menu_category, menu_type,
+                                    menu_description, creatime, user , menu_discount , menu_discount_values))
                 succmesg = f"{menu_name}新增成功"
                 request.session['succmesg'] = succmesg
                 return redirect('/clt/menu/')
@@ -214,6 +219,8 @@ class Client():
             menu_type = request.POST.get('meals_status')
             menu_category = request.POST.get('meals_category')
             menu_description = request.POST.get('meals_description')
+            menu_discount = request.POST.get('meals_discount')
+            menu_discount_values = request.POST.get('meals_discount_values')
             updatetime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
             menu_image = request.FILES.get('meals_image')
             # 處理文件上傳
@@ -242,8 +249,8 @@ class Client():
 
             cursor = connection.cursor()
             try:
-                cursor.execute("UPDATE client_menu SET meals_image = %s, meals_name = %s, meals_price = %s, meals_category = %s, meals_status = %s, meals_description = %s, meals_creattime = %s WHERE meals_owner = %s AND meals_number = %s", (
-                    file_name, menu_name, menu_price, menu_category, menu_type, menu_description, updatetime, user, menu_number))
+                cursor.execute("UPDATE client_menu SET meals_image = %s, meals_name = %s, meals_price = %s, meals_category = %s, meals_status = %s, meals_description = %s, meals_creattime = %s , meals_discount = %s , meals_discount_values = %s WHERE meals_owner = %s AND meals_number = %s", (
+                    file_name, menu_name, menu_price, menu_category, menu_type, menu_description, updatetime, menu_discount, menu_discount_values, user, menu_number))
                 succmesg = f"{menu_name}已更新"
                 request.session['succmesg'] = succmesg
                 return redirect('/clt/menu/')

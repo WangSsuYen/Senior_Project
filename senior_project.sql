@@ -39,6 +39,8 @@ CREATE TABLE
         meals_category INT NOT NULL COMMENT '餐點類別',
         meals_owner VARCHAR(15) NOT NULL COMMENT '餐點歸屬餐廳',
         meals_creattime datetime NOT NULL COMMENT '創建時間',
+        meals_discount VARCHAR(2) NOT NULL COMMENT '餐點折扣狀態',
+        meals_discount_values INT COMMENT '餐點折扣',
         PRIMARY KEY (meals_number),
         FOREIGN KEY (meals_owner) REFERENCES client(uniform_numbers),
         FOREIGN KEY (meals_category) REFERENCES meals_category(category_number)
@@ -59,3 +61,7 @@ ALTER TABLE
     client_menu CHANGE meals_number meals_number INT NOT NULL AUTO_INCREMENT COMMENT '餐點編號';
 ALTER TABLE
     client_menu CHANGE meals_category meals_category INT NOT NULL COMMENT '餐點類別';
+
+ALTER TABLE client_menu
+ADD COLUMN meals_discount VARCHAR(2) NOT NULL COMMENT '餐點折扣狀態',
+ADD COLUMN meals_discount_values INT COMMENT '餐點折扣';
