@@ -200,7 +200,7 @@ class Client():
 
             cursor = connection.cursor()
             try:
-                cursor.execute("INSERT INTO client_menu (meals_image, meals_name, meals_price, meals_category, meals_status, meals_description, meals_creattime, meals_owner , meals_discount , meals_discount_values) VALUES (%s, %s, %s, %s, %s, %s, %s, %s , %s , %s )", (file_name, menu_name, menu_price, menu_category, menu_type,
+                cursor.execute("INSERT INTO client_menu (meals_number, meals_image, meals_name, meals_price, meals_category, meals_status, meals_description, meals_creattime, meals_owner , meals_discount , meals_discount_values) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s , %s , %s )", (max_number+1, file_name, menu_name, menu_price, menu_category, menu_type,
                                     menu_description, creatime, user , menu_discount , menu_discount_values))
                 succmesg = f"{menu_name}新增成功"
                 request.session['succmesg'] = succmesg
@@ -360,7 +360,24 @@ class Client():
 
 class Customer():
     def index(request: HttpRequest):
-        return render(request, "customer_index.html")
+        if request.method == "GET":
+
+            categroys = "SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category  ON client_menu.meals_category = meals_category.category_number GROUP BY meals_category.category_name, client_menu.meals_category ORDER BY client_menu.meals_category ;"
+
+            Total_meals = "SELECT * FROM client_menu WHERE meals_status = %s ORDER BY meals_category;"
+
+            cursor = connection.cursor()
+            cursor.execute(categroys)
+            count_names = [desc[0] for desc in cursor.description]
+            count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
+            print(count_list)
+
+            cursor.execute(Total_meals , ("1",))
+            dict_name = [desc[0] for desc in cursor.description]
+            total_meals = [dict(zip(dict_name, row)) for row in cursor.fetchall()]
+            print(total_meals)
+
+        return render(request, "customer_index.html" , {"count_list" : count_list , "total_meals" : total_meals})
 
     def login(request: HttpRequest):
         return render(request, "customer_login.html")

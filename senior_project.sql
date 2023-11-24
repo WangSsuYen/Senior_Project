@@ -30,7 +30,7 @@ ALTER TABLE
 
 CREATE TABLE
     client_menu (
-        meals_number INT NOT NULL AUTO_INCREMENT COMMENT '餐點編號',
+        meals_number INT NOT NULL COMMENT '餐點編號',
         meals_image TEXT NOT NULL COMMENT '餐點圖片',
         meals_name VARCHAR(10) NOT NULL COMMENT '餐點名稱',
         meals_price INT NOT NULL COMMENT '餐點價格',
@@ -65,3 +65,5 @@ ALTER TABLE
 ALTER TABLE client_menu
 ADD COLUMN meals_discount VARCHAR(2) NOT NULL COMMENT '餐點折扣狀態',
 ADD COLUMN meals_discount_values INT COMMENT '餐點折扣';
+
+ALTER TABLE client_menu MODIFY COLUMN meals_number INT NOT NULL COMMENT '餐點編號';
