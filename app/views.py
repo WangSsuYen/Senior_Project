@@ -360,24 +360,28 @@ class Client():
 
 class Customer():
     def index(request: HttpRequest):
-        if request.method == "GET":
 
-            categroys = "SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category  ON client_menu.meals_category = meals_category.category_number GROUP BY meals_category.category_name, client_menu.meals_category ORDER BY client_menu.meals_category ;"
+        # 左側統計餐點總類參數
+        categroys = "SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number GROUP BY meals_category,category_name, client_menu.meals_category ORDER BY client_menu.meals_category ;"
 
-            Total_meals = "SELECT * FROM client_menu WHERE meals_status = %s ORDER BY meals_category;"
+        # 所有餐點參數
+        Total_meals = "SELECT * FROM client_menu WHERE meals_status = %s ORDER BY meals_category;"
 
-            cursor = connection.cursor()
-            cursor.execute(categroys)
-            count_names = [desc[0] for desc in cursor.description]
-            count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
-            print(count_list)
+        cursor = connection.cursor()
+        cursor.execute(categroys)
+        count_names = [desc[0] for desc in cursor.description]
+        count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
+        print(count_list)
 
-            cursor.execute(Total_meals , ("1",))
-            dict_name = [desc[0] for desc in cursor.description]
-            total_meals = [dict(zip(dict_name, row)) for row in cursor.fetchall()]
-            print(total_meals)
+        cursor.execute(Total_meals , ("1",))
+        dict_name = [desc[0] for desc in cursor.description]
+        total_meals = [dict(zip(dict_name, row)) for row in cursor.fetchall()]
+        print(total_meals)
 
-        return render(request, "customer_index.html" , {"count_list" : count_list , "total_meals" : total_meals})
+        return render(request, "customer_meal.html" , {"count_list" : count_list , "total_meals" : total_meals})
+
+    def map(request:HttpRequest):
+        return render(request , "customer_map.html")
 
     def login(request: HttpRequest):
         return render(request, "customer_login.html")

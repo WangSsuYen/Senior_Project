@@ -20,6 +20,7 @@ from app import views
 
 urlpatterns = [
     path('', views.Customer.index),
+    path('cum/map/' , views.Customer.map),
     path('cum/login/', views.Customer.login),
 
 
