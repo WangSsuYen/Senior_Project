@@ -381,6 +381,11 @@ class Customer():
         return render(request, "customer_meal.html" , {"count_list" : count_list , "total_meals" : total_meals})
 
     def map(request:HttpRequest):
+        cursor = connection.cursor()
+        cursor.execute("SELECT rest_name , rest_address , rest_phone FROM client_detail")
+        col_name = [desc[0] for desc in cursor.description]
+        rest_info = [dict(zip(col_name , row)) for row in cursor.fetchall()]
+        print(rest_info)
         return render(request , "customer_map.html")
 
     def login(request: HttpRequest):
