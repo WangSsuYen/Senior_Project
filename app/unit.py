@@ -5,6 +5,8 @@ from django.utils import timezone
 import re
 import os
 from django.conf import settings
+import googlemaps
+from datetime import datetime
 
 
 class DataSet():
@@ -81,6 +83,27 @@ class DataSet():
         if not os.path.exists(user_folder):
             os.makedirs(user_folder)
         return user_folder
+
+    def change_address(rest_info):
+        gmaps = googlemaps.Client(key='AIzaSyB1N_PssFMCULrrmOijg6edxKvINwXnyp8')
+
+        for item in rest_info:
+            # Geocoding an address
+            geocode_result = gmaps.geocode(item['rest_address'])
+
+            if geocode_result and 'geometry' in geocode_result[0]:
+                location = geocode_result[0]['geometry']['location']
+                item['lat'] =  location['lat']
+                item['lng'] =  location['lng']
+                # item['location'] = {'lat': location['lat'], 'lng': location['lng']}
+            else:
+                # Handle the case where geocoding fails
+                item['location'] = None
+
+        return rest_info
+
+        # Look up an address with reverse geocoding
+        # reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
 
     #
 

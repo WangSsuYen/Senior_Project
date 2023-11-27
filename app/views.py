@@ -382,11 +382,25 @@ class Customer():
 
     def map(request:HttpRequest):
         cursor = connection.cursor()
-        cursor.execute("SELECT rest_name , rest_address , rest_phone FROM client_detail")
+        cursor.execute("SELECT uniform_numbers , rest_name , rest_address , rest_phone FROM client_detail")
         col_name = [desc[0] for desc in cursor.description]
         rest_info = [dict(zip(col_name , row)) for row in cursor.fetchall()]
+
+        #將中文地址轉為經緯度
+        DataSet.change_address(rest_info)
         print(rest_info)
-        return render(request , "customer_map.html")
+
+        return render(request , "customer_map.html" , {"rest_info" : rest_info})
+
+    def rest_menu(request:HttpRequest):
+
+        id = request.GET.get("cn")
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM client_menu WHERE meals_owner = %s AND meals_status = %s;' , (id , "1" ,))
+        col_name = [desc[0] for desc in cursor.description]
+        menu = [dict(zip(col_name , row)) for row in cursor.fetchall()]
+        return render(request , 'customer_rest_orderPG.html' , {'menu' : menu})
+
 
     def login(request: HttpRequest):
         return render(request, "customer_login.html")
