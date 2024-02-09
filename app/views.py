@@ -361,22 +361,31 @@ class Client():
 class Customer():
     def index(request: HttpRequest):
 
-        # 左側統計餐點總類參數
-        categroys = "SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number GROUP BY meals_category,category_name, client_menu.meals_category ORDER BY client_menu.meals_category ;"
+        if request.method == "GET":
+                # 抓取網址回傳的類別編號
+                category_number = request.GET.get('cn')
 
-        # 所有餐點參數
-        Total_meals = "SELECT * FROM client_menu WHERE meals_status = %s ORDER BY meals_category;"
+                # 左側統計餐點總類參數
+                categroys = "SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number GROUP BY meals_category,category_name, client_menu.meals_category ORDER BY client_menu.meals_category ;"
 
-        cursor = connection.cursor()
-        cursor.execute(categroys)
-        count_names = [desc[0] for desc in cursor.description]
-        count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
-        print(count_list)
+                cursor = connection.cursor()
+                cursor.execute(categroys)
+                count_names = [desc[0] for desc in cursor.description]
+                count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
+                print(count_list)
 
-        cursor.execute(Total_meals , ("1",))
-        dict_name = [desc[0] for desc in cursor.description]
-        total_meals = [dict(zip(dict_name, row)) for row in cursor.fetchall()]
-        print(total_meals)
+
+                if category_number is None:
+                    Total_meals = "SELECT * FROM client_menu WHERE meals_status = %s  ORDER BY meals_category;"
+                    cursor.execute(Total_meals , ("1",))
+
+                else:
+                    categroy_meals = "SELECT * FROM client_menu WHERE meals_status = %s AND client_menu.meals_category = %s ORDER BY meals_category;"
+                    cursor.execute(categroy_meals, ("1",category_number,))
+
+                dict_name = [desc[0] for desc in cursor.description]
+                total_meals = [dict(zip(dict_name, row)) for row in cursor.fetchall()]
+                print(total_meals)
 
         return render(request, "customer_meal.html" , {"count_list" : count_list , "total_meals" : total_meals})
 
@@ -388,7 +397,7 @@ class Customer():
 
         #將中文地址轉為經緯度
         DataSet.change_address(rest_info)
-        print(rest_info)
+        # print(rest_info)
 
         return render(request , "customer_map.html" , {"rest_info" : rest_info})
 
