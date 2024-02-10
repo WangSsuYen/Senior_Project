@@ -192,7 +192,7 @@
         </div>
         <div class="rounded shadow-lg p-3 mb-3 mt-3 bg-body">
             <div class="mb-3 row d-flex justify-content-center">
-                <span class="fs-2 text-secondary">所有餐廳</span>
+                <span class="fs-2 text-secondary">所有餐點</span>
                 <hr>
                 {% for meals in total_meals%}
                 <div class="card mx-2 mt-3 mb-2" style="width: 15rem";>
@@ -217,11 +217,15 @@
                                 name="meals_discount_values{{meals.meals_number}}" value='{{meals.meals_discount_values}}' readonly>
                             <span class="input-group-text">% off</span>
                         </div>
-                        <div class="input-group mt-2 mb-3">
+                        <div class="input-group mt-2">
                             <span class="input-group-text">描述</span>
                             <textarea class="form-control" name="meals_meals_description{{meals.meals_number}}" readonly>{{meals.meals_description}}</textarea>
                         </div>
-                        <a href="#" class="btn btn-primary">點餐去</a>
+                        <div class="input-group mt-2 mb-3">
+                            <span class="input-group-text">數量</span>
+                            <input type="number" class="form-control" id="meals_quantity{{ meals.meals_number }}" name="meals_quantity{{ meals.meals_number }}" value="0">
+                        </div>
+                        <a href="#" class="btn btn-primary">加入購物車</a>
                     </div>
                 </div>
                 {% endfor %}

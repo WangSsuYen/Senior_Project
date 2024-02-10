@@ -57,19 +57,19 @@
                                             title="登入">登入
                                     </a>
                                 </li>
-                                <li class="dropdown-item">
+                                <!-- <li class="dropdown-item">
                                     <a class="nav-link d-flex align-items-center" href="/">
                                         <img class="nav-link" style="width: 48px;" src="{% static 'signup_icon.png' %}"
                                             title="註冊">註冊
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="dropdown-item">
                                     <a class="nav-link d-flex align-items-center" href="/">
                                         <img class="nav-link" style="width: 48px;" src="{% static 'market_icon.png' %}"
                                             title="購物車">購物車
                                     </a>
                                 </li>
-                                {% comment %} {% if request.cookies.get('user_id') %} {% endcomment %}
+                                {% comment %} {% if request.cookies.get('user_id') %}
                                 <li class="dropdown-item">
                                     <hr class="dropdown-divider">
                                 </li>
@@ -79,6 +79,7 @@
                                             title="登出">登出
                                     </a>
                                 </li>
+                                {% endcomment %}
                             </ul>
                         </li>
                         <li class="nav-item">

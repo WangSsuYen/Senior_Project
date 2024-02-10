@@ -367,18 +367,16 @@ class Customer():
 
                 # 左側統計餐點總類參數
                 categroys = "SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number GROUP BY meals_category,category_name, client_menu.meals_category ORDER BY client_menu.meals_category ;"
-
                 cursor = connection.cursor()
                 cursor.execute(categroys)
                 count_names = [desc[0] for desc in cursor.description]
                 count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
                 print(count_list)
 
-
+                #餐點類別
                 if category_number is None:
                     Total_meals = "SELECT * FROM client_menu WHERE meals_status = %s  ORDER BY meals_category;"
                     cursor.execute(Total_meals , ("1",))
-
                 else:
                     categroy_meals = "SELECT * FROM client_menu WHERE meals_status = %s AND client_menu.meals_category = %s ORDER BY meals_category;"
                     cursor.execute(categroy_meals, ("1",category_number,))
@@ -402,14 +400,39 @@ class Customer():
         return render(request , "customer_map.html" , {"rest_info" : rest_info})
 
     def rest_menu(request:HttpRequest):
+        #尋找店家有上線之產品
+        id = request.GET.get("id")
+        cn = request.GET.get("cn")
 
-        id = request.GET.get("cn")
-        cursor = connection.cursor()
-        cursor.execute('SELECT * FROM client_menu WHERE meals_owner = %s AND meals_status = %s;' , (id , "1" ,))
-        col_name = [desc[0] for desc in cursor.description]
-        menu = [dict(zip(col_name , row)) for row in cursor.fetchall()]
-        return render(request , 'customer_rest_orderPG.html' , {'menu' : menu})
+        #餐點類別
+        if cn is None:
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM client_menu WHERE meals_owner = %s AND meals_status = %s;' , (id , "1" ,))
+            col_name = [desc[0] for desc in cursor.description]
+            menu = [dict(zip(col_name , row)) for row in cursor.fetchall()]
+
+        else:
+            cursor = connection.cursor()
+            cursor.execute('SELECT * FROM client_menu WHERE meals_owner = %s AND meals_status = %s AND client_menu.meals_category = %s ORDER BY meals_category;' , (id , "1" , cn))
+            col_name = [desc[0] for desc in cursor.description]
+            menu = [dict(zip(col_name , row)) for row in cursor.fetchall()]
+
+
+        #店家產品清單
+        cursor.execute("SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category  ON client_menu.meals_category = meals_category.category_number WHERE meals_owner = %s AND meals_status = %s GROUP BY meals_category.category_name, client_menu.meals_category ORDER BY client_menu.meals_category  ;" , (id,"1", ))
+        count_names = [desc[0] for desc in cursor.description]
+        count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
+
+
+        return render(request , 'customer_rest_orderPG.html' , {'menu' : menu , "count_list" : count_list , "id" : id})
 
 
     def login(request: HttpRequest):
         return render(request, "customer_login.html")
+
+
+    def show_cart(request:HttpRequest):
+        if request.method == "GET":
+
+
+            return render(request , )
