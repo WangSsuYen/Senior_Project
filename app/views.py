@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse , JsonResponse
 from django.db import connection
 from django.utils import timezone
 from .unit import DataSet
@@ -431,8 +431,15 @@ class Customer():
         return render(request, "customer_login.html")
 
 
-    def show_cart(request:HttpRequest):
-        if request.method == "GET":
+    def add_to_cart(request:HttpRequest):
+        if request.method == "POST":
+            meal_nummber = request.POST.get("meals_id")
+            meal_count = request.POST.get(f"meals_quantity{meal_nummber}")
+            # meals_count = request.POST.get("meals_quantity{}".format(meal_nummber))
+            print(meal_nummber)
+            print(meal_count)
 
-
-            return render(request , )
+            cart_data = {"meal_nummber" : meal_nummber , "meals_count" : meal_count}
+            response = JsonResponse({"message": "已加入購物車"})
+            JsonResponse.set_cookie("cart_data", cart_data)
+            return
