@@ -94,10 +94,34 @@
         </nav>
     </header>
     <div class="container-fluid my-5">
-        {% block content %}
+    {%if succmesg %}
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-success alert-dismissible fade show " role="alert">
+            <strong>恭喜!</strong>{{succmesg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endif %}
+    {% if errmesg %}
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-center" role="alert">
+            <strong>錯誤!</strong>{{errmesg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endif %}
+    {% if warnmesg %}
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-warning alert-dismissible fade show d-flex justify-content-center" role="alert">
+            <strong>注意!</strong>{{warnmesg}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endif %}
+    {% block content %}
 
 
-        {% endblock content %}
+    {% endblock content %}
     </div>
     <!-- Bootstrap JS (需要jQuery和Popper.js支援) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"

@@ -29,8 +29,7 @@
                 <hr>
                 {% for meals in menu %}
                 <div class="card mx-4 mt-3 mb-3" style="width: 15rem";>
-                    <form method="POST" action="/add_to_cart/">
-                        {% csrf_token %}
+                    <form action="/add_to_cart/">
                         <div class="mt-3 mb-3 justify-content-center d-flex">
                             <img src="{%static 'media/menu/'%}{{meals.meals_owner}}/{{meals.meals_image}}"
                                 class="card-img-top" style="height: 120px;width: 120px;">

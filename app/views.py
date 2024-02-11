@@ -432,14 +432,13 @@ class Customer():
 
 
     def add_to_cart(request:HttpRequest):
-        if request.method == "POST":
-            meal_nummber = request.POST.get("meals_id")
-            meal_count = request.POST.get(f"meals_quantity{meal_nummber}")
-            # meals_count = request.POST.get("meals_quantity{}".format(meal_nummber))
-            print(meal_nummber)
-            print(meal_count)
 
-            cart_data = {"meal_nummber" : meal_nummber , "meals_count" : meal_count}
-            response = JsonResponse({"message": "已加入購物車"})
-            JsonResponse.set_cookie("cart_data", cart_data)
-            return
+        meal_nummber = request.GET.get("meals_id")
+        meal_count = request.GET.get(f"meals_quantity{meal_nummber}")
+        oders_id = request.get_host()
+        # meals_count = request.POST.get("meals_quantity{}".format(meal_nummber))
+        print(oders_id)
+        cart_data = {"meal_nummber" : meal_nummber , "meals_count" : meal_count}
+        response = JsonResponse({"message": "已加入購物車"})
+        response.set_cookie("cart_data", cart_data)
+        return response
