@@ -77,8 +77,7 @@ class DataSet():
 
     def create_user_folder(uniform_numbers):
         # 指定用户文件夹的路径
-        user_folder = os.path.join(
-            settings.MEDIA_ROOT, f"menu/{uniform_numbers}/")
+        user_folder = os.path.join(settings.MEDIA_ROOT, f"menu/{uniform_numbers}/")
     # 检查文件夹是否已存在，如果不存在则创建它
         if not os.path.exists(user_folder):
             os.makedirs(user_folder)
