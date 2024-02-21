@@ -8,16 +8,18 @@
     <div class="main zoomer">
         <input type="checkbox" id="chk" aria-hidden="true">
         <div class="signup">
-            <form>
+            <form method="POST" action="/cum/signup/">
+                {% csrf_token %}
                 <label for="chk" aria-hidden="true">註冊</label>
-                <input type="text" name="txt" placeholder="User name" required="">
+                <input type="text" name="student_id" placeholder="Student ID" required="">
                 <input type="email" name="email" placeholder="Email" required="">
                 <input type="password" name="pswd" placeholder="Password" required="">
                 <button>註冊</button>
             </form>
         </div>
         <div class="login">
-            <form>
+            <form method="POST" action="/cum/login/">
+                {% csrf_token %}
                 <label for="chk" aria-hidden="true">登入</label>
                 <input type="email" name="email" placeholder="Email" required="">
                 <input type="password" name="pswd" placeholder="Password" required="">

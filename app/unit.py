@@ -23,8 +23,7 @@ class DataSet():
 
     def check_signup(self):
         cursor = connection.cursor()
-        cursor.execute(
-            "SELECT * FROM client WHERE uniform_numbers = %s", (self.uniform_numbers, ))
+        cursor.execute("SELECT * FROM client WHERE uniform_numbers = %s", (self.uniform_numbers, ))
         # 因%s為傳輸文字，因此uniform_numbers須轉為Str
         user = cursor.fetchone()
         if user is not None:
