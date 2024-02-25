@@ -300,6 +300,7 @@ class Client():
         errmesg = None
         succmesg = None
         warnmesg = None
+        sign_status = "client"
 
         if request.method == "POST":
             uniform_numbers = request.POST.get('uniform_numbers')
@@ -308,8 +309,7 @@ class Client():
             creattime = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
             # print(uniform_numbers, client_password,password_confirm, creattime)
 
-            validator = DataSet(
-                uniform_numbers, client_password, password_confirm)
+            validator = DataSet(sign_status, uniform_numbers = uniform_numbers, client_password = client_password, password_confirm = password_confirm)
             errmesg = validator.check_signup()
             if errmesg is not None:
                 return render(request, "client_base.html", {'errmesg': errmesg})
@@ -435,26 +435,27 @@ class Customer():
         errmesg = None
         succmesg = None
         warnmesg = None
+        sign_status = "customer"
 
         if request.method == "POST":
             student_id = request.POST.get('student_id')
             email = request.POST.get('email')
             password = request.POST.get('pswd')
             creat_time = timezone.now().strftime("%Y-%m-%d %H:%M:%S")
-            print(student_id , email , password , creat_time)
+            # print(student_id , email , password , creat_time)
 
-            # validator = DataSet(student_id , email , password)
-            # errmesg = validator.check_signup()
-            # if errmesg is not None:
-            #     return render(request, "customer_login.html", {'errmesg': errmesg})
-            # else:
-            try:
-                cursor = connection.cursor()
-                cursor.execute("INSERT INTO customer_detail (student_id , email , psd , creat_time) VALUES (%s , %s , %s , %s)",(student_id , email , password , creat_time))
-                succmesg = '註冊成功，請重新登入'
-                return redirect("/")
-            except Exception as errmesg:
-                return render(request, 'customer_login.html', {'errmesg': errmesg})
+            validator = DataSet(sign_status, student_id = student_id, customer_email = email, customer_password = password)
+            errmesg = validator.check_signup()
+            if errmesg is not None:
+                return render(request, "customer_login.html", {'errmesg': errmesg})
+            else:
+                try:
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO customer_detail (student_id , email , psd , creat_time) VALUES (%s , %s , %s , %s)",(student_id , email , password , creat_time))
+                    succmesg = '註冊成功，請重新登入'
+                    return render(request, "customer_login.html", {'succmesg': succmesg})
+                except Exception as errmesg:
+                    return render(request, 'customer_login.html', {'errmesg': errmesg})
 
         # return render(request, 'customer_login.html')
 
