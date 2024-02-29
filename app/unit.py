@@ -22,11 +22,19 @@ class DataSet():
             self.customer_password = kwargs.get("customer_password")
 
 
-    def check_user_login(request):
-        user = request.session.get('uniform_numbers')
-        if user is None:
-            return None  # 使用 None 表示未登入
-        return user  # 返回已登入的使用者名稱
+    def check_user_login(request, status):
+        if status == "client":
+            user = request.session.get('uniform_numbers')
+            if user is None:
+                return None  # 使用 None 表示未登入
+            return user  # 返回已登入的使用者名稱
+        elif status == "customer":
+            user = request.session.get("student_id")
+            if user is None :
+                return None
+            return user
+
+
 
     def check_signup(self):
         if self.sign_status == "client":

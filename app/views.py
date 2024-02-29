@@ -12,7 +12,8 @@ from django.conf import settings
 class Client():
     def index(request: HttpRequest):
         # --檢查是否已登入
-        user = DataSet.check_user_login(request)
+        status = "client"
+        user = DataSet.check_user_login(request, status=status)
         if user is None:
             return render(request, 'client_base.html', {'user_logout': user})
         else:
@@ -359,35 +360,40 @@ class Client():
 
 
 class Customer():
-    def index(request: HttpRequest):
+    def index(request: HttpRequest, **kwargs):
+        errmesg = kwargs.get("errmesg")
+        succmesg = kwargs.get("succmesg")
+        warnmesg = kwargs.get("warmesg")
+        print(errmesg, succmesg, warnmesg)
+        status = "customer"
+        user = DataSet.check_user_login(request, status=status)
 
-        if request.method == "GET":
-                # 抓取網址回傳的類別編號
-                category_number = request.GET.get('cn')
+        # 抓取網址回傳的類別編號
+        category_number = request.GET.get('cn')
+        # 左側統計餐點總類參數
+        categroys = "SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number GROUP BY meals_category,category_name, client_menu.meals_category ORDER BY client_menu.meals_category ;"
+        cursor = connection.cursor()
+        cursor.execute(categroys)
+        count_names = [desc[0] for desc in cursor.description]
+        count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
+        # print(count_list)
+        #餐點類別
+        if category_number is None:
+            Total_meals = "SELECT * FROM client_menu WHERE meals_status = %s  ORDER BY meals_category;"
+            cursor.execute(Total_meals , ("1",))
+        else:
+            categroy_meals = "SELECT * FROM client_menu WHERE meals_status = %s AND client_menu.meals_category = %s ORDER BY meals_category;"
+            cursor.execute(categroy_meals, ("1",category_number,))
 
-                # 左側統計餐點總類參數
-                categroys = "SELECT meals_category.category_name, client_menu.meals_category, COUNT(client_menu.meals_number) AS total FROM client_menu JOIN meals_category ON client_menu.meals_category = meals_category.category_number GROUP BY meals_category,category_name, client_menu.meals_category ORDER BY client_menu.meals_category ;"
-                cursor = connection.cursor()
-                cursor.execute(categroys)
-                count_names = [desc[0] for desc in cursor.description]
-                count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
-                print(count_list)
+        dict_name = [desc[0] for desc in cursor.description]
+        total_meals = [dict(zip(dict_name, row)) for row in cursor.fetchall()]
+        # print(total_meals)
 
-                #餐點類別
-                if category_number is None:
-                    Total_meals = "SELECT * FROM client_menu WHERE meals_status = %s  ORDER BY meals_category;"
-                    cursor.execute(Total_meals , ("1",))
-                else:
-                    categroy_meals = "SELECT * FROM client_menu WHERE meals_status = %s AND client_menu.meals_category = %s ORDER BY meals_category;"
-                    cursor.execute(categroy_meals, ("1",category_number,))
-
-                dict_name = [desc[0] for desc in cursor.description]
-                total_meals = [dict(zip(dict_name, row)) for row in cursor.fetchall()]
-                print(total_meals)
-
-        return render(request, "customer_meal.html" , {"count_list" : count_list , "total_meals" : total_meals})
+        return render(request, "customer_meal.html", {"count_list":count_list, "total_meals":total_meals, "warnmesg":warnmesg,"succmesg":succmesg, "errmesg":errmesg, "student_id":user})
 
     def map(request:HttpRequest):
+        status = "customer"
+        user = DataSet.check_user_login(request, status=status)
         cursor = connection.cursor()
         cursor.execute("SELECT uniform_numbers , rest_name , rest_address , rest_phone FROM client_detail")
         col_name = [desc[0] for desc in cursor.description]
@@ -397,9 +403,11 @@ class Customer():
         DataSet.change_address(rest_info)
         # print(rest_info)
 
-        return render(request , "customer_map.html" , {"rest_info" : rest_info})
+        return render(request , "customer_map.html" , {"rest_info" : rest_info, "student_id":user})
 
     def rest_menu(request:HttpRequest):
+        status = "customer"
+        user = DataSet.check_user_login(request, status=status)
         #尋找店家有上線之產品
         id = request.GET.get("id")
         cn = request.GET.get("cn")
@@ -424,10 +432,30 @@ class Customer():
         count_list = [dict(zip(count_names, row)) for row in cursor.fetchall()]
 
 
-        return render(request , 'customer_rest_orderPG.html' , {'menu' : menu , "count_list" : count_list , "id" : id})
+        return render(request , 'customer_rest_orderPG.html' , {'menu':menu, "count_list":count_list, "id":id, "student_id":user})
 
 
     def login(request: HttpRequest):
+        errmesg = None
+        succmesg = None
+        warnmesg = None
+        if request.method == "POST":
+            email = request.POST.get("email")
+            customer_password = request.POST.get("pswd")
+            try:
+                cursor = connection.cursor()
+                cursor.execute("SELECT * FROM customer_detail WHERE email = %s AND psd = %s", (email, customer_password,))
+                user = cursor.fetchone()
+                print(user[0])
+                if user is not None:
+                    request.session['student_id'] = user[0]
+                    succmesg = "登入成功。"
+                    return Customer.index(request, succmesg = succmesg)
+                else:
+                    errmesg = "帳號或密碼錯誤，請重新輸入。"
+            except Exception as err:
+                errmesg = err
+                return render(request, "customer_login.html" , {"errmesg": errmesg})
 
         return render(request, "customer_login.html")
 

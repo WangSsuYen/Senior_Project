@@ -51,14 +51,14 @@
                                     title="會員">會員專區
                             </a>
                             <ul class="dropdown-menu">
-                                {% comment %} {% if request.cookies.get('user_id') %}
+                                {% if not student_id %}
                                 <li class="dropdown-item">
                                     <a class="nav-link d-flex align-items-center" href="/cum/login/">
                                         <img class="nav-link" style="width: 48px;" src="{% static 'login_icon.png' %}"
                                             title="登入">登入
                                     </a>
                                 </li>
-                                {% endcomment %}
+                                {% endif %}
                                 <!-- <li class="dropdown-item">
                                     <a class="nav-link d-flex align-items-center" href="/">
                                         <img class="nav-link" style="width: 48px;" src="{% static 'signup_icon.png' %}"
@@ -71,7 +71,7 @@
                                             title="購物車">購物車
                                     </a>
                                 </li>
-                                {% comment %} {% if not request.cookies.get('user_id') %}
+                                {% if student_id %}
                                 <li class="dropdown-item">
                                     <hr class="dropdown-divider">
                                 </li>
@@ -81,7 +81,7 @@
                                             title="登出">登出
                                     </a>
                                 </li>
-                                {% endcomment %}
+                                {% endif %}
                             </ul>
                         </li>
                         <li class="nav-item">
