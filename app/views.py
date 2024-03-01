@@ -10,12 +10,15 @@ from django.conf import settings
 
 
 class Client():
-    def index(request: HttpRequest):
+    def index(request: HttpRequest, **kwargs):
+        errmesg = kwargs.get("errmesg")
+        succmesg = kwargs.get("succmesg")
+        warnmesg = kwargs.get("warmesg")
         # --檢查是否已登入
         status = "client"
         user = DataSet.check_user_login(request, status=status)
         if user is None:
-            return render(request, 'client_base.html', {'user_logout': user})
+            return render(request, 'client_base.html', {'user_logout': user, "errmesg":errmesg, "succmesg":succmesg, "warnmesg":warnmesg})
         else:
             return redirect('/clt/basic/')
 
@@ -23,11 +26,13 @@ class Client():
         errmesg = None
         succmesg = None
         warnmesg = None
+        status = "client"
         # --檢查是否已登入
-        user = DataSet.check_user_login(request)
+        user = DataSet.check_user_login(request, status=status)
         # 無登入轉跳至登入頁面
         if user is None:
-            return redirect('/clt/')
+            errmesg = "請先登入。"
+            return Client.index(request, errmesg=errmesg)
         # 登入狀態進行鋪陳資料
         else:
             if request.method == "GET":
@@ -113,10 +118,15 @@ class Client():
                         return render(request, 'client_basic_info.html', {'errmesg': errmesg, 'user_logout': user})
 
     def menu(request: HttpRequest):
+        errmesg = None
+        succmesg = None
+        warnmesg = None
+        status = "client"
         # --檢查是否已登入
-        user = DataSet.check_user_login(request)
+        user = DataSet.check_user_login(request, status=status)
         if user is None:
-            return redirect('/clt/')
+            errmesg = "請先登入。"
+            return Client.index(request, errmesg=errmesg)
         else:
             if request.method == "GET":
                 #檢查成功、失敗訊息(成功、失敗訊息會在頁面顯示一次後消失)
@@ -363,7 +373,7 @@ class Customer():
     def index(request: HttpRequest, **kwargs):
         errmesg = kwargs.get("errmesg")
         succmesg = kwargs.get("succmesg")
-        warnmesg = kwargs.get("warmesg")
+        warnmesg = kwargs.get("warnmesg")
         print(errmesg, succmesg, warnmesg)
         status = "customer"
         user = DataSet.check_user_login(request, status=status)
@@ -486,6 +496,12 @@ class Customer():
                     return render(request, 'customer_login.html', {'errmesg': errmesg})
 
         # return render(request, 'customer_login.html')
+
+    def logout(request: HttpRequest):
+        # request.session.clear()  # 清出所有session資料
+        del request.session['student_id']  # 清除session特定指定資料
+        warnmesg = "已帳號登出。"
+        return Customer.index(request, warnmesg=warnmesg)
 
 
     def add_to_cart(request:HttpRequest):

@@ -24,6 +24,7 @@ urlpatterns = [
     path('cum/login/', views.Customer.login),
     path('cum/signup/', views.Customer.signup),
     path("cum/rest_menu/" , views.Customer.rest_menu),
+    path("cum/logout/", views.Customer.logout),
     path('add_to_cart/' , views.Customer.add_to_cart),
 
 
