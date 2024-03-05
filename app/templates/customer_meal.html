@@ -195,7 +195,8 @@
                 <hr>
                 {% for meals in total_meals%}
                 <div class="card mx-2 mt-3 mb-2" style="width: 15rem";>
-                    <form action="/add_to_cart/">
+                    <form action="/add_to_cart/" method="POST">
+                        {% csrf_token %}
                         <div class="mt-3 mb-3 justify-content-center d-flex">
                             <img src="{%static 'media/menu/'%}{{meals.meals_owner}}/{{meals.meals_image}}"
                                 class="card-img-top" style="height: 120px;width: 120px;">
@@ -223,10 +224,12 @@
                             </div>
                             <div class="input-group mt-2 mb-3">
                                 <span class="input-group-text">數量</span>
-                                <input type="number" class="form-control" id="meals_quantity{{ meals.meals_number }}" name="meals_quantity{{ meals.meals_number }}" value="0">
+                                <input type="number" class="form-control" id="meals_quantity{{meals.meals_number}}" name="meals_quantity{{ meals.meals_number }}"
+                                value="{% if request.method == 'POST' %}{% with meals_quantity_key='meals_quantity'|add:meals.meals_number %}{{ request.POST.meals_quantity_key }}{% endwith %}{% else %}0{% endif %}">
                             </div>
                             <!-- 添加隐藏的输入字段 -->
                             <input type="hidden" name="meals_id" value="{{meals.meals_number}}">
+                            <input type="hidden" name="meals_name" value="{{meals.meals_name}}">
                             <button type="submit" class="btn btn-primary">加入購物車</button>
                         </div>
                     </form>

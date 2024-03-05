@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpRequest, HttpResponse , JsonResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.db import connection
 from django.utils import timezone
 from .unit import DataSet
@@ -371,12 +371,19 @@ class Client():
 
 class Customer():
     def index(request: HttpRequest, **kwargs):
+        # 回報偵測
         errmesg = kwargs.get("errmesg")
         succmesg = kwargs.get("succmesg")
         warnmesg = kwargs.get("warnmesg")
         print(errmesg, succmesg, warnmesg)
         status = "customer"
         user = DataSet.check_user_login(request, status=status)
+
+        # cookis偵測
+        meal_number = request.COOKIES.get("meal_number")
+        meal_count = request.COOKIES.get("meal_count")
+        order_id = request.COOKIES.get("order_id")
+        print(meal_count, meal_number, order_id)
 
         # 抓取網址回傳的類別編號
         category_number = request.GET.get('cn')
@@ -505,13 +512,14 @@ class Customer():
 
 
     def add_to_cart(request:HttpRequest):
-
-        meal_nummber = request.GET.get("meals_id")
-        meal_count = request.GET.get(f"meals_quantity{meal_nummber}")
-        oders_id = request.get_host()
-        # meals_count = request.POST.get("meals_quantity{}".format(meal_nummber))
-        print(oders_id)
-        cart_data = {"meal_nummber" : meal_nummber , "meals_count" : meal_count}
-        response = JsonResponse({"message": "已加入購物車"})
-        response.set_cookie("cart_data", cart_data)
-        return response
+        if request.method == "POST":
+            meal_number = request.POST.get("meals_id")
+            meal_name = request.POST.get("meals_name")
+            meal_count = request.POST.get(f"meals_quantity{meal_number}")
+            order_id = request.get_host()
+            #建立cookies變數
+            cookie_key = f"meal_number:{meal_number}, meal_count:{meal_count}, order_id:{order_id}"
+            # 设置cookie
+            response = Customer.index(request, succmesg=f"{meal_name}以加入購物車")  # 创建HttpResponse对象
+            response.set_cookie("meals_cookie", value=cookie_key)
+            return   response# 返回HttpResponse对象
