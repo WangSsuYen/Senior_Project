@@ -25,7 +25,8 @@ urlpatterns = [
     path('cum/signup/', views.Customer.signup),
     path("cum/rest_menu/" , views.Customer.rest_menu),
     path("cum/logout/", views.Customer.logout),
-    path('add_to_cart/' , views.Customer.add_to_cart),
+    path("cum/cart/", views.Customer.cart),
+    # path('add_to_cart/' , views.Customer.add_to_cart),
 
 
     path('clt/', views.Client.index),

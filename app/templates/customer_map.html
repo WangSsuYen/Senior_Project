@@ -5,7 +5,7 @@
 
 <script>
     function initMap() {
-        // 你的 JSON 樣式
+        // 你的 JSON 样式
         var customStyle = [
             {
                 "featureType": "poi.business",
@@ -14,13 +14,13 @@
             }
         ];
 
-        // 初始化地圖
+        // 初始化地图
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 16,
-            styles: customStyle // 將 JSON 樣式應用到地圖
+            styles: customStyle // 将 JSON 样式应用到地图
         });
 
-        // 獲取使用者當前位置
+        // 获取用户当前位置
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var userLocation = {
@@ -28,44 +28,44 @@
                     lng: position.coords.longitude
                 };
 
-                // 將地圖中心設置為使用者的當前位置
+                // 将地图中心设置为使用者的当前位置
                 map.setCenter(userLocation);
 
-                // 在使用者位置添加標記
+                // 在使用者位置添加标记
                 var marker = new google.maps.Marker({
                     position: userLocation,
                     map: map,
                     title: 'Your Location',
-                    visible: false // 設為不可見
+                    visible: true // 设置为不可见
                 });
 
-                // 遍歷從資料庫中檢索到的每個餐廳資訊
+                // 遍历从数据库中检索到的每个餐厅信息
                 var restaurants = {{ rest_info|safe }};
                 for (var i = 0; i < restaurants.length; i++) {
                     var restaurant = restaurants[i];
                     var restaurantLocation = {
-                        lat: parseFloat(restaurant.lat), // 請用實際的緯度值替換
-                        lng: parseFloat(restaurant.lng)  // 請用實際的經度值替換
+                        lat: parseFloat(restaurant.lat), // 请用实际的纬度值替换
+                        lng: parseFloat(restaurant.lng)  // 请用实际的经度值替换
                     };
 
-                    // 在每個餐廳位置添加標記
+                    // 在每个餐厅位置添加标记
                     var restaurantMarker = new google.maps.Marker({
                         position: restaurantLocation,
                         map: map,
                         title: restaurant.rest_name ,
-                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' // 藍色圖示
+                        icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' // 蓝色图标
                     });
 
-                    // 使用 IIFE 來建立新的作用域，保留每個標記的狀態
+                    // 使用 IIFE 来创建新的作用域，保留每个标记的状态
                     (function (marker, restaurant) {
-                        // 為每個標記添加點擊事件，當點擊時顯示訊息窗口
+                        // 为每个标记添加点击事件，当点击时显示信息窗口
                         marker.addListener('click', function() {
                             var contentString = '<div>'+
                                 '<h2>'+restaurant.rest_name+'</h2>'+
                                 '<p>地址: '+restaurant.rest_address+'</p>'+
-                                '<p>電話: '+restaurant.rest_phone+'</p>'+
+                                '<p>电话: '+restaurant.rest_phone+'</p>'+
                                 '<a class="btn btn-outline-info name="uniform_numbers" href="/cum/rest_menu/?id='
-                                + restaurant.uniform_numbers + '">' + 'GO ~ 點餐去 !</a>' +
+                                + restaurant.uniform_numbers + '">' + 'GO ~ 点餐去 !</a>' +
                                 '</div>';
 
                             var infowindow = new google.maps.InfoWindow({
@@ -76,18 +76,19 @@
                         });
                     })(restaurantMarker, restaurant);
                 }
-            },
-                function () {
-                    // 如果獲取位置失敗，可以在這裡處理
-                    console.error('無法獲取位置');
-                });
-        }
-        else {
-            // 如果瀏覽器不支持地理位置 API，可以在這裡處理
-            console.error('瀏覽器不支持地理位置 API');
+            }, errormesg);  // getCurrentPosition 第二个参数为错误处理函数
+        } else {
+            // 如果浏览器不支持地理位置 API，可以在这里处理
+            console.error('浏览器不支持地理位置 API');
         }
     }
+
+    function errormesg() {
+        // 如果获取位置失败，可以在这里处理
+        console.error('无法获取位置');
+    }
 </script>
+
 
 
 

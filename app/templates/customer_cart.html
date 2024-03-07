@@ -1,0 +1,45 @@
+{% extends "customer_base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="shadow-lg p-3 mb-3 bg-body rounded justify-content-center d-flex">
+        <div class="table-responsive">
+            <table class="table caption-top">
+                <caption>List of users</caption>
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">圖片</th>
+                            <th scope="col">餐點名稱</th>
+                            <th scope="col">餐點原價</th>
+                            <th scope="col">數量</th>
+                            <th scope="col">折扣</th>
+                            <th scope="col">價格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                        </tr>
+                        <tfoot>
+
+                        </tfoot>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

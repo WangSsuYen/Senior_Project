@@ -240,6 +240,77 @@
     </div>
 </div>
 
+<script>
+    // 获取所有加入购物车按钮
+    var addToCartButtons = document.querySelectorAll('.btn-primary');
+
+    // 循环为每个按钮添加点击事件监听器
+    addToCartButtons.forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            // 阻止表单默认提交行为
+            event.preventDefault();
+
+            // 获取当前按钮所在的表单元素
+            var form = button.closest('form');
+
+            // 获取表单中的 meal_id、meals_quantity 及 meals_name
+            var mealId = form.querySelector('[name="meals_id"]').value;
+            var mealQuantity = form.querySelector('[name="meals_quantity' + mealId + '"]').value;
+            var mealName = form.querySelector('[name="meals_name"]').value;
+
+            // 创建一个对象，存储 meal_id、数量和用户IP地址
+            var cartItem = {
+                meal_id: mealId,
+                quantity: mealQuantity,
+                user_ip: '{{ request.META.REMOTE_ADDR }}'  // 获取用户IP地址，这里使用模板语法，请确保在模板中使用该代码时能够正确渲染
+            };
+
+            // 获取当前cookie中的购物车数据
+            var existingCartData = JSON.parse(getCookie('cart_data') || '[]');
+
+            // 判断购物车中是否已经存在相同的meal_id
+            var existingCartItemIndex = existingCartData.findIndex(function(item) {
+                return item.meal_id === mealId;
+            });
+
+            // 如果购物车中已经存在相同的meal_id，则修改该项的数量和用户IP地址
+            if (existingCartItemIndex !== -1) {
+                existingCartData[existingCartItemIndex].quantity = mealQuantity;
+                existingCartData[existingCartItemIndex].user_ip = '{{ request.META.REMOTE_ADDR }}';
+            } else {
+                // 否则将新的购物车项添加到购物车数据中
+                existingCartData.push(cartItem);
+            }
+
+            // 将更新后的购物车数据存储到cookie中
+            setCookie('cart_data', JSON.stringify(existingCartData), 1);  // 这里的1表示cookie的过期时间，单位为天
+        });
+    });
+
+    // 函数：设置cookie
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    // 函数：获取cookie
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+</script>
+
 
 
 {% endblock content %}

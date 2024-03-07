@@ -5,7 +5,7 @@ from django.utils import timezone
 from .unit import DataSet
 from django.template.loader import render_to_string
 from django.core.files.base import ContentFile
-import os
+import os, json
 from django.conf import settings
 
 
@@ -418,7 +418,7 @@ class Customer():
 
         #將中文地址轉為經緯度
         DataSet.change_address(rest_info)
-        # print(rest_info)
+        print(rest_info)
 
         return render(request , "customer_map.html" , {"rest_info" : rest_info, "student_id":user})
 
@@ -511,15 +511,44 @@ class Customer():
         return Customer.index(request, warnmesg=warnmesg)
 
 
-    def add_to_cart(request:HttpRequest):
-        if request.method == "POST":
-            meal_number = request.POST.get("meals_id")
-            meal_name = request.POST.get("meals_name")
-            meal_count = request.POST.get(f"meals_quantity{meal_number}")
-            order_id = request.get_host()
-            #建立cookies變數
-            cookie_key = f"meal_number:{meal_number}, meal_count:{meal_count}, order_id:{order_id}"
-            # 设置cookie
-            response = Customer.index(request, succmesg=f"{meal_name}以加入購物車")  # 创建HttpResponse对象
-            response.set_cookie("meals_cookie", value=cookie_key)
-            return   response# 返回HttpResponse对象
+    def cart(request:HttpRequest):
+        #取得購物車cookie資料
+        cart_data = request.COOKIES.get("cart_data")
+
+        #解析購物車內的JSON格式
+        cart_items = json.loads(cart_data) if cart_data else []
+
+        #分析出JSON內容
+        meal_id = []
+        meal_count = []
+        for item_1 in cart_items :
+            meal_id.append(item_1['meal_id'])
+            meal_count.append(item_1['quantity'])
+
+        #分析出cookie中餐點內容
+        meal_data = []
+        column_names =[]
+        cursor = connection.cursor()
+        #取出餐點資料
+        for item_2 in meal_id :
+            cursor.execute("SELECT * FROM client_menu WHERE meals_number =%s ;",(item_2,))
+            meal_data.append(cursor.fetchone())
+        #取出資料表欄位名稱
+        for dec in cursor.description:
+            column_names.append(dec[0])
+
+        return render(request, "customer_cart.html", {"meal_data":meal_data, "meal_count":meal_count, "column_names":column_names})
+
+
+    # def add_to_cart(request:HttpRequest):
+    #     if request.method == "POST":
+    #         meal_number = request.POST.get("meals_id")
+    #         meal_name = request.POST.get("meals_name")
+    #         meal_count = request.POST.get(f"meals_quantity{meal_number}")
+    #         order_id = request.get_host()
+    #         #建立cookies變數
+    #         cookie_key = f"meal_number:{meal_number}, meal_count:{meal_count}, order_id:{order_id}"
+    #         # 设置cookie
+    #         response = Customer.index(request, succmesg=f"{meal_name}以加入購物車")  # 创建HttpResponse对象
+    #         response.set_cookie("meals_cookie", value=cookie_key)
+    #         return   response# 返回HttpResponse对象

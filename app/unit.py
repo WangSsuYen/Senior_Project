@@ -131,7 +131,8 @@ class DataSet():
                 # item['location'] = {'lat': location['lat'], 'lng': location['lng']}
             else:
                 # Handle the case where geocoding fails
-                item['location'] = None
+                # item['location'] = None
+                pass
 
         return rest_info
 
