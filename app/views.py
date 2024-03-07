@@ -521,23 +521,29 @@ class Customer():
         #分析出JSON內容
         meal_id = []
         meal_count = []
-        for item_1 in cart_items :
-            meal_id.append(item_1['meal_id'])
-            meal_count.append(item_1['quantity'])
+        for item in cart_items :
+            meal_id.append(item['meal_id'])
+            meal_count.append(int(item['quantity']))
 
         #分析出cookie中餐點內容
-        meal_data = []
-        column_names =[]
         cursor = connection.cursor()
-        #取出餐點資料
-        for item_2 in meal_id :
-            cursor.execute("SELECT * FROM client_menu WHERE meals_number =%s ;",(item_2,))
-            meal_data.append(cursor.fetchone())
+        cursor.execute("SELECT * FROM client_menu ;")
         #取出資料表欄位名稱
-        for dec in cursor.description:
-            column_names.append(dec[0])
+        column_names =[]
+        for des in cursor.description :
+            column_names.append(des[0])
+        #取出餐點資料
+        total_meals=[]
+        for row, count in zip(meal_id, meal_count):
+            cursor.execute("SELECT * FROM client_menu WHERE meals_number =%s ;",(row,))
+            data = cursor.fetchall()
+            for merge in data :
+                meal_dict = dict(zip(column_names, merge))
+                meal_dict['meal_count'] = count
+                total_meals.append(meal_dict)
+        print(total_meals)
 
-        return render(request, "customer_cart.html", {"meal_data":meal_data, "meal_count":meal_count, "column_names":column_names})
+        return render(request, "customer_cart.html", {"total_meals":total_meals})
 
 
     # def add_to_cart(request:HttpRequest):
