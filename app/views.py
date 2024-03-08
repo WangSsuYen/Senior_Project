@@ -528,11 +528,13 @@ class Customer():
         #分析出cookie中餐點內容
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM client_menu ;")
+
         #取出資料表欄位名稱
         column_names =[]
         for des in cursor.description :
             column_names.append(des[0])
-        #取出餐點資料
+
+        #取出餐點資料並依照廠商編號做排序
         total_meals=[]
         for row, count in zip(meal_id, meal_count):
             cursor.execute("SELECT * FROM client_menu WHERE meals_number =%s ORDER BY meals_owner;",(row,))
@@ -541,9 +543,22 @@ class Customer():
                 meal_dict = dict(zip(column_names, merge))
                 meal_dict['meal_count'] = count
                 total_meals.append(meal_dict)
-        print(total_meals)
 
-        return render(request, "customer_cart.html", {"total_meals":total_meals})
+        #依照廠商做分別
+        grouped_meals = {}
+        for meal in total_meals:
+            owner = meal['meals_owner']
+            cursor.execute("SELECT rest_name FROM client_detail WHERE uniform_numbers = %s;", (owner,))
+            owner_data = cursor.fetchone()
+            if owner_data:
+                owner_name = owner_data[0]  # 提取 owner 的详细信息
+                if owner_name not in grouped_meals:
+                    grouped_meals[owner_name] = []
+                grouped_meals[owner_name].append(meal)
+
+        print(grouped_meals)
+
+        return render(request, "customer_cart.html", {"grouped_meals":grouped_meals})
 
 
     # def add_to_cart(request:HttpRequest):

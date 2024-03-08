@@ -5,8 +5,10 @@
 <div class="container-fluid">
     <div class="shadow-lg p-3 mb-3 bg-body rounded justify-content-center">
         <div class="table-responsive">
+            {% if grouped_meals %}
+            {% for owner, meals_list in grouped_meals.items %}
             <table class="table caption-top table-hover table-stripe table-bordered">
-                <caption>List of users</caption>
+                <caption>{{owner}}</caption>
                     <thead class="table-dark">
                         <tr>
                             <th scope="col">圖片</th>
@@ -18,33 +20,52 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for data in total_meals %}
+                        {% for data in meals_list %}
                         <tr>
                             <th scope="row">
-                                <img src="{%static 'media/menu/'%}{{data.meals_owner}}/{{data.meals_image}}"
-                                class="card-img-top" style="height: 60px;width: 60px;">
+                                <img src="{% static 'media/menu/' %}{{ data.meals_owner }}/{{ data.meals_image }}"
+                                    class="card-img-top" style="height: 60px; width: 60px;">
                             </th>
                             <td style="vertical-align: middle;">
-                                <p class="text-primary">{{data.meals_name}}</p>
+                                <p class="text-primary">{{ data.meals_name }}</p>
                             </td>
-                            <td style="vertical-align: middle;">{{data.meal_count}}</td>
-                            <td style="vertical-align: middle;">{{data.meals_price}}</td>
-                            <td style="vertical-align: middle;">{{data.meals_discount_values}}</td>
                             <td style="vertical-align: middle;">
-                                <script>
-                                    var mealCount = {{ data.meal_count }};
-                                    var mealPrice = {{ data.meals_price }};
-                                    var discountValues = {{ data.meals_discount_values }};
-                                    var total = (1 - discountValues / 100) * mealPrice * mealCount;
-                                    document.write(total.toFixed(2)); // 显示结果，保留两位小数
-                                </script>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" name="meal_count_{{ data.meals_number }}" id="meal_count_{{ data.meals_number }}" value="{{ data.meal_count }}">
+                                </div>
                             </td>
+                            <td style="vertical-align: middle;">{{ data.meals_price }}</td>
+                            <td style="vertical-align: middle;">{{ data.meals_discount_values }}</td>
+                            <td style="vertical-align: middle;">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="total_{{ data.meals_number }}" id="total_{{ data.meals_number }}">
+                                </div>
+                            </td>
+                            <script>
+                                var mealCountInput = document.querySelector("#meal_count_{{ data.meals_number }}");
+                                var mealPrice = {{ data.meals_price }};
+                                var discountValues = {{ data.meals_discount_values }};
+                                var totalElement = document.querySelector("#total_{{ data.meals_number }}");
+                                mealCountInput.addEventListener("input", function() {
+                                    var mealCount = parseInt(mealCountInput.value);
+                                    var total = (1 - discountValues / 100) * mealPrice * mealCount;
+                                    totalElement.value = total.toFixed(0);
+                                });
+                            </script>
                         </tr>
                         {% endfor %}
                         <tfoot>
                         </tfoot>
                     </tbody>
             </table>
+            {% endfor %}
+            {% else %}
+            <div>
+                <img src="{%static 'image/你不餓嗎/'%}" class="card-img-top">
+                <p class="d-flex mt-3 justify-content-end">圖片來源：https://memes.tw/wtf/140632</p>
+            </div>
+            {% endif %}
+
         </div>
     </div>
 </div>
