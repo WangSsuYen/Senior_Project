@@ -535,7 +535,7 @@ class Customer():
         #取出餐點資料
         total_meals=[]
         for row, count in zip(meal_id, meal_count):
-            cursor.execute("SELECT * FROM client_menu WHERE meals_number =%s ;",(row,))
+            cursor.execute("SELECT * FROM client_menu WHERE meals_number =%s ORDER BY meals_owner;",(row,))
             data = cursor.fetchall()
             for merge in data :
                 meal_dict = dict(zip(column_names, merge))

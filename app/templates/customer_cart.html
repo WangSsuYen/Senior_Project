@@ -20,16 +20,17 @@
                     <tbody>
                         {% for data in total_meals %}
                         <tr>
-
                             <th scope="row">
                                 <img src="{%static 'media/menu/'%}{{data.meals_owner}}/{{data.meals_image}}"
                                 class="card-img-top" style="height: 60px;width: 60px;">
                             </th>
-                            <td>{{data.meals_name}}</td>
-                            <td>{{data.meal_count}}</td>
-                            <td>{{data.meals_price}}</td>
-                            <td>{{data.meals_discount_values}}</td>
-                            <td>
+                            <td style="vertical-align: middle;">
+                                <p class="text-primary">{{data.meals_name}}</p>
+                            </td>
+                            <td style="vertical-align: middle;">{{data.meal_count}}</td>
+                            <td style="vertical-align: middle;">{{data.meals_price}}</td>
+                            <td style="vertical-align: middle;">{{data.meals_discount_values}}</td>
+                            <td style="vertical-align: middle;">
                                 <script>
                                     var mealCount = {{ data.meal_count }};
                                     var mealPrice = {{ data.meals_price }};
