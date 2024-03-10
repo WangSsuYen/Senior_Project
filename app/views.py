@@ -521,9 +521,11 @@ class Customer():
         #分析出JSON內容
         meal_id = []
         meal_count = []
+        order_ip = []
         for item in cart_items :
             meal_id.append(item['meal_id'])
             meal_count.append(int(item['quantity']))
+            order_ip.append(item['user_ip'])
 
         #分析出cookie中餐點內容
         cursor = connection.cursor()
@@ -544,7 +546,7 @@ class Customer():
                 meal_dict['meal_count'] = count
                 total_meals.append(meal_dict)
 
-        #依照廠商做分別
+        #別依照廠商做分
         grouped_meals = {}
         for meal in total_meals:
             owner = meal['meals_owner']
